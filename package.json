@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "mysql2": "^3.7.1",
+    "nodemon": "^3.0.3",
+    "react-datepicker": "^4.25.0"
+  }
+}

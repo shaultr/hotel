@@ -1,0 +1,13 @@
+.InvationContainer{
+    position: sticky;
+    top: 0;
+    width: 100%;
+  }
+
+  .footerContainer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 10%;
+    background-color: #a7afa6;
+  }

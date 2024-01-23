@@ -1,0 +1,28 @@
+/* .backgroundContainer {
+    position: relative;
+    width: 100%;
+    height: 400px; /* גובה מלא של המסך */
+    /* background-image: url('1.jpg');
+    background-size: cover;
+    background-position: center; */
+    /*background-repeat: no-repeat; /* מונע חזרות */
+    /* overflow: hidden;
+  } */
+
+  /* .backgroundImage {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  } */
+  /* .map{
+    background-color: aquamarine;
+    width: 60%;
+    height: 20px;
+    margin-left: auto;
+    margin-right: auto;
+  } */
+ 

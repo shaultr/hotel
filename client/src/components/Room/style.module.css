@@ -1,0 +1,55 @@
+.room {
+    direction: rtl;
+    text-align: center;
+
+}
+
+.container {
+    display: flex;
+    width: 60%;
+    height: 8%;
+    padding: 10px;
+    border-radius: 3px;
+    margin-top: 15px;
+    border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 6px;
+    justify-content: space-around;
+
+}
+
+.info {
+    width: 60%;
+    height: 150px;
+    background-color: #cea10013;
+}
+
+img {
+    border: 2px solid black;
+    width: 20%;
+}
+
+.butten {
+    width: 120px;
+    height: 30px;
+    background-color: #485696;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.butten:hover {
+    border-radius: 20px;
+}
+
+.total {
+    padding: 12px;
+    border-right: 1px solid black;
+    height: 100%;
+    font-size: 33px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
