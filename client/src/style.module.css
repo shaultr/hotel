@@ -1,13 +1,30 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
   text-align: center;
 }
 
-.Invation{
-  position: sticky;
-  top: 0;
-  width: 100%;
-  background-color: #5c02001c;
+
+textarea,
+input,
+select,
+button {
+    font: inherit;
 }
 
+h1, h2, h3 {
+  text-transform: capitalize;
+}
+
+a{
+  text-decoration: none;
+}
 
 /* plates color: https://colorpalettes.net/color-palette-4016/ */

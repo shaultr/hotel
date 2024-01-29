@@ -2,6 +2,7 @@ import styles from './style.module.css';
 import Rooms from '../../pages/Rooms'
 import Registration from '../../components/Registration';
 import Gallery from '../../pages/Gallery';
+import Home from '../../pages/Home';
 
 import { Route, Routes } from 'react-router-dom';
 
@@ -12,6 +13,7 @@ export default function Content() {
             <div className={styles.backgroundContainer}></div>
 
             <Routes>
+                <Route path='/' element={<Home />} />
                 <Route path='/gallery' element={<Gallery />} />
                 <Route path='/registration' element={<Registration />} />
                 <Route path='/rooms' element={<Rooms />} />

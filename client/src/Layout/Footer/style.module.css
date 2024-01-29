@@ -1,8 +1,12 @@
-/* .footer{
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 10%;
-    background-color: #a7afa6;
-  
-  } */
+.footer {
+  max-width: 100%;
+  padding: 50px;
+  background-color: #A7AFA6;
+  color:#cb9e00 ;
+  margin-top: 25px;
+  box-shadow:inset 0px 0px 10px 10px #5c020060;
+  font-size: 50px;
+  font-weight: 900;
+  text-shadow: 00px 0px 10px black;
+  border: 2px solid #CEA000;
+}

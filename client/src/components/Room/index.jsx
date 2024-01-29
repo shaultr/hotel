@@ -2,19 +2,43 @@ import styles from './style.module.css';
 import Popup from 'reactjs-popup';
 import PopUpRoom from '../PopUpRoom'
 import { useNavigate } from 'react-router-dom';
-
-export default function Room() {
-
+import axios from 'axios';
+import { useEffect } from 'react';
+export default function Room({ room }) {
+  const { Room_id, Price_per_night } = room;
   const navigate = useNavigate();
+
   const registration = () => {
     navigate('/registration');
   }
+
+  const getImagesByRoomId = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:8000/images/2`)
+      return data;
+    }
+    catch (err) {
+
+    }
+  };
+
+  
+  const getArrImages = async () => {
+    const [x] = await getImagesByRoomId()
+    return x;
+  };
+  let image = getArrImages();
+
+  console.log(image);
+  useEffect(() => {
+    getArrImages()
+  }, [])
 
   return (
     <div className={styles.room}>
       <div className={styles.container}>
         <Popup trigger={
-          <img src='https://www.cvent.com/sites/default/files/image/2021-10/hotel%20room%20with%20beachfront%20view.jpg' />
+          <img src={image} />
         } position="right center">
           <PopUpRoom />
         </Popup>
@@ -37,9 +61,10 @@ export default function Room() {
           </ul>
         </div>
         <div className={styles.total}>
-          999.90
-        <div className={styles.butten} onClick={registration}> הזמן עכשיו</div>
-          </div>
+          {Price_per_night}
+
+          <div className={styles.butten} onClick={registration}> הזמן עכשיו</div>
+        </div>
       </div>
     </div>
   )

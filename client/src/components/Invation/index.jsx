@@ -1,49 +1,57 @@
 import style from './style.module.css';
-import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
+import { useContext } from 'react';
+import DataContext from '../../context/DataContext'
+
 const Invation = () => {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const {currentDate, startDate, setStartDate, endDate,setEndDate} = useContext(DataContext);
+  let day = currentDate.getDate();
+  let month = currentDate.getMonth() + 1;
+  let year = currentDate.getFullYear();
+  let nextDate = addDays(currentDate, 1);
+  const navigate = useNavigate();
+  // const [startDate, setStartDate] = useState(currentDate);
+  // const [endDate, setEndDate] = useState(nextDate);
+
   const handleButtonClick = () => {
     const formattedStartDate = startDate ? format(startDate, "yyyy-MM-dd") : null;
     const formattedEndDate = endDate ? format(endDate, "yyyy-MM-dd") : null;
-if (formattedStartDate === null || formattedEndDate===null ) {
-  alert("נא הזן נתונים בתאריכים");
-  return;
-}
-    console.log('Start Date:', formattedStartDate);
-    console.log('End Date:', formattedEndDate);
-  };
+    navigate('/rooms')
+
+  }
+
   return (
     <div className={style.invation}>
       <div className={style.title} >Invation</div>
       {/* <label htmlFor="startDate">Start Date:</label> */}
       <DatePicker
-      placeholderText='Start Date:'
-      id="startDate"
-      selected={startDate}
-      onChange={(date) => setStartDate(date)}
-      selectsStart
-      startDate={startDate}
-      endDate={endDate}
-      dateFormat="yyyy-MM-dd"
+        placeholderText={day + " " + month + " " + year}
+        id="startDate"
+        selected={startDate}
+        onChange={(date) => setStartDate(date)}
+        selectsStart
+        startDate={startDate}
+        endDate={endDate}
+        minDate={currentDate}
+        dateFormat="yyyy-MM-dd"
       />
       {/* <label htmlFor="endDate">End Date:</label> */}
       <DatePicker
-      placeholderText='End Date:'
+        placeholderText={day + 1 + " " + month + " " + year}
         id="endDate"
         selected={endDate}
         onChange={(date) => setEndDate(date)}
         selectsEnd
         startDate={startDate}
         endDate={endDate}
-        minDate={startDate}
+        minDate={nextDate}
         dateFormat="yyyy-MM-dd"
       />
-      <button onClick={handleButtonClick}>בדוק זמינות</button>
-      
+      <button onClick={handleButtonClick}>חפש חדרים</button>
+
     </div>
   );
 };
