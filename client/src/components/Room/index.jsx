@@ -3,44 +3,33 @@ import Popup from 'reactjs-popup';
 import PopUpRoom from '../PopUpRoom'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 export default function Room({ room }) {
-  const { Room_id, Price_per_night } = room;
+  const { Room_id, Price_per_night, Room_type, Num_beds } = room;
   const navigate = useNavigate();
 
   const registration = () => {
     navigate('/registration');
   }
 
-  const getImagesByRoomId = async () => {
-    try {
-      const { data } = await axios.get(`http://localhost:8000/images/2`)
-      return data;
-    }
-    catch (err) {
+  const [images, setImages] = useState([]);
 
-    }
-  };
 
-  
-  const getArrImages = async () => {
-    const [x] = await getImagesByRoomId()
-    return x;
-  };
-  let image = getArrImages();
-
-  console.log(image);
   useEffect(() => {
-    getArrImages()
+    axios.get(`http://localhost:8000/images/${Room_id}`)
+      .then((i) => setImages(i.data))
   }, [])
+
+
 
   return (
     <div className={styles.room}>
       <div className={styles.container}>
         <Popup trigger={
-          <img src={image} />
+          <img src={images[0]?.image_url} />
         } position="right center">
-          <PopUpRoom />
+          <PopUpRoom images={images} />
         </Popup>
         <div className={styles.info}>
           <ul>
@@ -50,18 +39,18 @@ export default function Room({ room }) {
             </li>
 
             <li>טלפון</li>
-            <li>מיבש שיער
-            </li>
-            <li>חלוק רחצה
-            </li>
+
             <li>מיניבר
             </li>
-
+            <li>שרות חדרים
+            </li>
 
           </ul>
+          <h3>{Room_type + " מספר מיטות: " + Num_beds}</h3>
+          <h3>{ }</h3>
         </div>
         <div className={styles.total}>
-          {Price_per_night}
+          {Room_id}
 
           <div className={styles.butten} onClick={registration}> הזמן עכשיו</div>
         </div>

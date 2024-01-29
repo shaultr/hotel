@@ -1,13 +1,13 @@
 import styles from './style.module.css';
 import { useState } from 'react';
-export default function PopUpRoom() {
+export default function PopUpRoom({images}) {
   // const imagePath = '/images';
 
-  const images = [
-    '/images/1.jpg',
-    '/images/2.jpg',
-    '/images/3.jpg'
-  ];
+  // const images = [
+  //   '/images/1.jpg',
+  //   '/images/2.jpg',
+  //   '/images/3.jpg'
+  // ];
   const [currentImage, setCurrentImage] = useState(0);
 
   const nextImage = () => {
@@ -23,7 +23,7 @@ export default function PopUpRoom() {
 
       <h1 className={styles.titlePopup}>שם החדר</h1>
       <div>
-        <img src={images[currentImage]} alt={`Image ${currentImage + 1}`} />
+        <img src={images[currentImage]?.image_url} alt={`Image ${currentImage + 1}`} />
         <div className={styles.popRight}>
           <div className={styles.roomInclude}>
             <h4>החדר כולל</h4>
@@ -47,12 +47,3 @@ export default function PopUpRoom() {
     </div>
   )
 }
-
-
-
-
-
-
-
-
-

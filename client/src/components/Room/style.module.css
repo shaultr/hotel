@@ -20,6 +20,8 @@
 }
 
 .info {
+    display: flex;
+    justify-content: space-around;
     width: 60%;
     height: 150px;
     background-color: #cea10013;

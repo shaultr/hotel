@@ -5,13 +5,15 @@ import Footer from './Footer';
 import Invation from '../components/Invation';
 import { useState } from 'react';
 import DataContext from '../context/DataContext';
-import { addDays } from 'date-fns';
+import { format, addDays } from 'date-fns';
 
 export default function Layout() {
     
     let currentDate = new Date();
     let nextDate = addDays(currentDate, 1);
 
+
+    
     const [startDate, setStartDate] = useState(currentDate);
     const [endDate, setEndDate] = useState(nextDate);
 
