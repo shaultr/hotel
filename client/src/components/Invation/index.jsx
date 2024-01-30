@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import DataContext from '../../context/DataContext'
 
 const Invation = () => {
-  const {currentDate, startDate, setStartDate, endDate,setEndDate} = useContext(DataContext);
+  const { currentDate, startDate, setStartDate, endDate, setEndDate, numBeds, setNumBeds} = useContext(DataContext);
   let day = currentDate.getDate();
   let month = currentDate.getMonth() + 1;
   let year = currentDate.getFullYear();
@@ -18,24 +18,13 @@ const Invation = () => {
   const handleButtonClick = () => {
     const formattedStartDate = startDate ? format(startDate, "yyyy-MM-dd") : null;
     const formattedEndDate = endDate ? format(endDate, "yyyy-MM-dd") : null;
-    navigate('/rooms?startDate=' + formattedStartDate + '&endDate=' + formattedEndDate)
+    navigate('/rooms?startDate=' + formattedStartDate + '&endDate=' + formattedEndDate + '&numbeds=' + numBeds)
   }
-
+  
   return (
     <div className={style.invation}>
       <div className={style.title} >Invation</div>
-      <DatePicker
-        placeholderText={day + " " + month + " " + year}
-        id="startDate"
-        selected={startDate}
-        onChange={(date) => setStartDate(date)}
-        selectsStart
-        startDate={startDate}
-        endDate={endDate}
-        minDate={currentDate}
-        dateFormat="yyyy-MM-dd"
-      />
-      {/* <label htmlFor="endDate">End Date:</label> */}
+      <button onClick={handleButtonClick}>חפש חדרים</button>
       <DatePicker
         placeholderText={day + 1 + " " + month + " " + year}
         id="endDate"
@@ -47,8 +36,18 @@ const Invation = () => {
         minDate={nextDate}
         dateFormat="yyyy-MM-dd"
       />
-      <button onClick={handleButtonClick}>חפש חדרים</button>
-
+      <DatePicker
+        placeholderText={day + " " + month + " " + year}
+        id="startDate"
+        selected={startDate}
+        onChange={(date) => setStartDate(date)}
+        selectsStart
+        startDate={startDate}
+        endDate={endDate}
+        minDate={currentDate}
+        dateFormat="yyyy-MM-dd"
+      />
+<input type='text' placeholder="2"/>
     </div>
   );
 };

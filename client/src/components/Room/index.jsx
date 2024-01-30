@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export default function Room({ room }) {
-  const { Room_id, Price_per_night, Room_type, Num_beds } = room;
+export default function Room({ room, difference  }) {
+  const { room_id, price_per_night, room_type, num_beds } = room;
   const navigate = useNavigate();
 
   const registration = () => {
@@ -17,7 +17,7 @@ export default function Room({ room }) {
 
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/images/${Room_id}`)
+    axios.get(`http://localhost:8000/images/${room_id}`)
       .then((i) => setImages(i.data))
   }, [])
 
@@ -48,11 +48,15 @@ console.log(images[0]?.image_url);
             </li>
 
           </ul>
-          <h3>{Room_type + " מספר מיטות: " + Num_beds}</h3>
+          <h3>{room_type + " מספר מיטות: " + num_beds}</h3>
           <h3>{ }</h3>
         </div>
         <div className={styles.total}>
-          {Price_per_night}
+          <div className={styles.datails}>
+          מחיר עבור לילה:{price_per_night } 
+          <br />
+          עבור {difference} ימים :</div>
+          {price_per_night*difference}
 
           <div className={styles.butten} onClick={registration}> הזמן עכשיו</div>
         </div>

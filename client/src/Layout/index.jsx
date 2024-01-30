@@ -16,13 +16,14 @@ export default function Layout() {
     
     const [startDate, setStartDate] = useState(currentDate);
     const [endDate, setEndDate] = useState(nextDate);
+    const [numBeds, setNumBeds] = useState(2);
 
     return (
         <div className={style.layout}>
 
             <Menu />
             <div className={style.container}>
-                    <DataContext.Provider value={{ currentDate, startDate, setStartDate, endDate, setEndDate }}>
+                    <DataContext.Provider value={{ currentDate, startDate, setStartDate, endDate, setEndDate, numBeds, setNumBeds}}>
                 <div className={style.InvationContainer}>
                         <Invation />
                 </div>

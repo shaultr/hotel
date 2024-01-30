@@ -22,12 +22,13 @@ async function getRoomAvailable(startDate, endDate, roomId) {
 };
 
 //get all rooms available by date
-async function getRoomsAvailables(startDate, endDate) {
+async function getRoomsAvailables(startDate, endDate, numBeds) {
     const SQL = `
     SELECT *
     FROM rooms
     WHERE 
       Availability = 1
+      AND num_beds = ${numBeds}
       AND room_id NOT IN (
         SELECT DISTINCT room_id
         FROM bookings
@@ -36,11 +37,13 @@ async function getRoomsAvailables(startDate, endDate) {
       );
   `;
     const [data] = await pool.query(SQL);
+    console.log(data); 
     return data;
 }
 
+getRoomsAvailables('2024-02-01', '2024-02-02',2)
 
 module.exports = {
     getRoomAvailable,
-    getRoomsAvailables
+    getRoomsAvailables,
 }

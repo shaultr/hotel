@@ -9,10 +9,10 @@ rooms.get('/', async (req, res) => {
 
 
 //get all rooms available by date
-rooms.get('/:start_date/:end_date', async (req, res) => {
+rooms.get('/:start_date/:end_date/:numbeds', async (req, res) => {
      
     try {
-        const data = await functions.getRoomsAvailables(req.params.start_date, req.params.end_date);
+        const data = await functions.getRoomsAvailables(req.params.start_date, req.params.end_date , req.params.numbeds);
         if (data) {
             res.json(data);
             return; 
@@ -24,5 +24,6 @@ rooms.get('/:start_date/:end_date', async (req, res) => {
     };
 
 });
+
 
 module.exports = rooms;
