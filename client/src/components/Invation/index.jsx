@@ -14,20 +14,16 @@ const Invation = () => {
   let year = currentDate.getFullYear();
   let nextDate = addDays(currentDate, 1);
   const navigate = useNavigate();
-  // const [startDate, setStartDate] = useState(currentDate);
-  // const [endDate, setEndDate] = useState(nextDate);
 
   const handleButtonClick = () => {
     const formattedStartDate = startDate ? format(startDate, "yyyy-MM-dd") : null;
     const formattedEndDate = endDate ? format(endDate, "yyyy-MM-dd") : null;
-    navigate('/rooms')
-
+    navigate('/rooms?startDate=' + formattedStartDate + '&endDate=' + formattedEndDate)
   }
 
   return (
     <div className={style.invation}>
       <div className={style.title} >Invation</div>
-      {/* <label htmlFor="startDate">Start Date:</label> */}
       <DatePicker
         placeholderText={day + " " + month + " " + year}
         id="startDate"

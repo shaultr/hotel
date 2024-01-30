@@ -14,9 +14,9 @@ export default function Content() {
 
             <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/gallery' element={<Gallery />} />
-                <Route path='/registration' element={<Registration />} />
                 <Route path='/rooms' element={<Rooms />} />
+                <Route path='/registration' element={<Registration />} />
+                <Route path='/gallery' element={<Gallery />} />
             </Routes>
             <div className={styles.InvationContainer}>
             </div>

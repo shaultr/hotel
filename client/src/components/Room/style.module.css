@@ -26,11 +26,17 @@
     height: 150px;
     background-color: #cea10013;
 }
-
-img {
-    border: 2px solid black;
-    width: 20%;
+.image{
+    width: 25%;
+    height: 150px;
 }
+image img{
+    max-height: 150px;
+}
+
+/* img {
+    border: 2px solid black;
+} */
 
 .butten {
     width: 120px;
@@ -44,9 +50,8 @@ img {
 }
 
 .butten:hover {
-    border-radius: 20px;
+    border-radius: 16px;
 }
-
 .total {
     padding: 12px;
     border-right: 1px solid black;

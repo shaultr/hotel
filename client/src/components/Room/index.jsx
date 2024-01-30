@@ -21,13 +21,15 @@ export default function Room({ room }) {
       .then((i) => setImages(i.data))
   }, [])
 
-
+console.log(images[0]?.image_url);
 
   return (
     <div className={styles.room}>
       <div className={styles.container}>
         <Popup trigger={
+          <div className={styles.image}>
           <img src={images[0]?.image_url} />
+          </div>
         } position="right center">
           <PopUpRoom images={images} />
         </Popup>
@@ -50,7 +52,7 @@ export default function Room({ room }) {
           <h3>{ }</h3>
         </div>
         <div className={styles.total}>
-          {Room_id}
+          {Price_per_night}
 
           <div className={styles.butten} onClick={registration}> הזמן עכשיו</div>
         </div>

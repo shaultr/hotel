@@ -3,6 +3,12 @@ const rooms = express.Router();
 const functions = require('../../database/roomsQuery')
 
 //get all rooms available by date
+rooms.get('/', async (req, res) => {
+    req.query
+})
+
+
+//get all rooms available by date
 rooms.get('/:start_date/:end_date', async (req, res) => {
      
     try {
