@@ -6,9 +6,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { format, addDays } from 'date-fns';
 import { useContext } from 'react';
 import DataContext from '../../context/DataContext'
+import Popup from 'reactjs-popup';
+
 
 const Invation = () => {
-  const { currentDate, startDate, setStartDate, endDate, setEndDate, numBeds, setNumBeds} = useContext(DataContext);
+
+  const { currentDate, startDate, setStartDate, endDate, setEndDate, numBeds, setNumBeds } = useContext(DataContext);
   let day = currentDate.getDate();
   let month = currentDate.getMonth() + 1;
   let year = currentDate.getFullYear();
@@ -20,7 +23,14 @@ const Invation = () => {
     const formattedEndDate = endDate ? format(endDate, "yyyy-MM-dd") : null;
     navigate('/rooms?startDate=' + formattedStartDate + '&endDate=' + formattedEndDate + '&numbeds=' + numBeds)
   }
-  
+  const handlePlus = () => {
+    numBeds < 5 && setNumBeds(numBeds + 1)
+    console.log(numBeds);
+  }
+  const handleMinus = () => {
+    numBeds > 2 && setNumBeds(numBeds - 1)
+    console.log(numBeds);
+  }
   return (
     <div className={style.invation}>
       <div className={style.title} >Invation</div>
@@ -47,7 +57,18 @@ const Invation = () => {
         minDate={currentDate}
         dateFormat="yyyy-MM-dd"
       />
-<input type='text' placeholder="2"/>
+
+      <Popup trigger={
+        <input type='text' placeholder={`   ${numBeds}  אורחים`} />
+      } position="right center">
+
+        <div className={style.numbeds}>
+          <div className={style.plus} onClick={handlePlus}>+</div>
+          {numBeds}
+          <div className={style.plus} onClick={handleMinus}>-</div>
+          בחר מספר אורחים
+        </div>
+      </Popup>
     </div>
   );
 };

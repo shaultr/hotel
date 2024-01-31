@@ -4,20 +4,22 @@
     width: 80%;
     justify-content: space-between;
     margin: 20px auto;
-    height: 60vh;
+    height: 70vh;
+    gap: 20px;
 }
 
 .abaut {
     width: 30%;
-    background-color: #cea10038;
-    border-left: 25px solid #a7afa6b0;
+    background-color: #cea1002c;
+    /* border-left: 25px solid #a7afa6b0; */
     padding: 10px;
     padding-top: 60px;
 }
 
 .image {
-    background-image: url(home.jpg);
-    background-color: rgb(17, 90, 66);
-    background-position: -350px;
-    width: 60%;
+    background-image: url(../../../public/images/home.jpg);
+    /* padding-top: 800px; */
+    /* background-position: -350px; */
+    background-repeat: no-repeat;
+    width: 80%;
 }

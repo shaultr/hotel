@@ -2,9 +2,20 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+.registration {
+    height: 100vh;
+}
 
+.invation {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    height: 170px;
+    border: 1px solid black;
+    margin: 20px auto;
+}
 
-.form{
+.form {
     margin-top: 25px;
     border: 2px solid #cea000;
     max-width: 700px;
@@ -15,11 +26,13 @@
     background-color: #a7afa6;
     box-shadow: 0px 0px 10px 10px #5c020079;
 }
-form{
+
+form {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+
 .title {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     color: #cea000;
