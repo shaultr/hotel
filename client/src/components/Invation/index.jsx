@@ -79,7 +79,7 @@ const Invation = () => {
           <div className={style.plus} onClick={handleMinus} style={{ color: numBeds === 2 && "#A7AFA6" }}
 
           >-</div>
-          בחר מספר אורחים
+          בחר מספר אורחים:
         </div>
       </Popup>
     </div>
