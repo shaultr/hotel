@@ -61,4 +61,5 @@ button {
     border-radius: 50%;
     color: black;
     font-weight: 900;
+    cursor: pointer;
 }
