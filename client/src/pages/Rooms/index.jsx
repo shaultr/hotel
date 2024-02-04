@@ -24,6 +24,10 @@ export default function Rooms() {
   const endDate = queryParams.endDate;
   const numBeds = queryParams.numbeds;
 
+  const dates = {
+    startDate: startDate,
+    endDate: endDate
+  }
   console.log(numBeds);
   const [rooms, setRooms] = useState([]);
   const [difference, setDifference] = useState(0);
@@ -40,11 +44,11 @@ export default function Rooms() {
   useEffect(() => {
     setDifference(calculateDateDifference());
     getRooms()
-  }, [startDate, endDate, numBeds, difference]);
+  }, []);
 
   const showRooms = () => {
 
-    return rooms.map(room => <Room key={room.room_id} room={room} difference={difference} />)
+    return rooms.map(room => <Room key={room.room_id} room={room} difference={difference} dates={dates} />)
 
   };
 

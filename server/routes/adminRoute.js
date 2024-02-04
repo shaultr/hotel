@@ -1,7 +1,25 @@
 const express = require("express");
-const { getBooking, getPendingBookings, getActiveBookings, getAllBookings } = require("../../database/query");
+const { newCustomer, getCustomer, newBooking, getBooking, getPendingBookings, getActiveBookings,
+    getAllBookings } = require("../../database/bookingQuery");
 
 const adminRoute = express.Router();
+
+adminRoute.post("/newBooking", async (req, res) => {
+    try {
+        const { fullName, phoneNumber, email, room_id, payment_amount, startDate, endDate } = req.body;
+        const newC = await newCustomer(fullName, phoneNumber, email);
+        const customer_id = newC.customer_id;
+
+        const newB = await newBooking(customer_id, room_id, startDate, endDate, payment_amount, 1);
+        res.json(newB);
+        console.log("newB:", newB[0]);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send();
+    }
+});
+
+
 
 adminRoute.get("/getBooking/:book", async (req, res) => {
     try {

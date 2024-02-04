@@ -16,6 +16,7 @@ body,
   color: white;
   text-align: center;
   box-shadow: 10px 10px 1000px  rgb(0, 0, 0);
+  outline: 5000px solid rgba(0, 0, 0, 0.8);
   transform: translate(-50%, -50%);
   transform-origin: center center;
   animation: scale-in 0.5s ease-in-out;

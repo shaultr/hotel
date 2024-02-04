@@ -53,7 +53,7 @@ const Invation = () => {
         startDate={startDate}
         endDate={endDate}
         minDate={choiseEndDate}
-        // dateFormat="dd yyyy  MMMM "
+        dateFormat= "yyyy MMM dd"
         />
       <DatePicker
         placeholderText={day + " " + month + " " + year}
@@ -64,7 +64,7 @@ const Invation = () => {
         startDate={startDate}
         endDate={endDate}
         minDate={currentDate}
-        dateFormat=" yyyy MMMM dd"
+        dateFormat= "yyyy MMM dd"
       />
 
       <Popup trigger={

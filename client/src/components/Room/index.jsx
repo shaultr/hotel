@@ -6,18 +6,18 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 
-export default function Room({ room, difference }) {
+export default function Room({ room, difference, dates }) {
   const [pension, setPension] = useState(false);
 
   const { room_id, price_per_night, room_type, num_beds } = room;
+  const { startDate, endDate } = dates
   const navigate = useNavigate();
 
+
   const registration = () => {
-    navigate('/registration');
+    navigate(`/registration/?room_id=${room_id}&payment_amount=${price_per_night * difference}&startDate=${startDate}&endDate=${endDate}`);
   }
-
   const [images, setImages] = useState([]);
-
 
   useEffect(() => {
     axios.get(`http://localhost:8000/images/${room_id}`)

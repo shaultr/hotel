@@ -42,13 +42,30 @@ async function newBooking(customer_id, room_id, start_date, end_date, payment_am
     (customer_id, room_id,start_date, end_date, payment_amount, booking_status)
     VALUES (?,?,?,?,?,?)`;
     const [data] = await pool.query(SQL, [customer_id, room_id, start_date, end_date, payment_amount, booking_status]);
-    const t = await getBooking(data.insertId);
-    console.log(t);
+    const TheNewBooking = await getBooking(data.insertId);
 };
+
+async function newCustomer(full_name, phone, email, adress, credit_card_number) {
+    let SQL = `INSERT INTO customers (full_name, phone, email, address, credit_card_number)
+    VALUES (?,?,?,?,?);`;
+    const [data] = await pool.query(SQL, [full_name, phone, email, adress, credit_card_number]);
+    const TheNewCustomer = await getCustomer(data.insertId);
+    return TheNewCustomer;
+};
+
+// פונקציה לקבלת לקוח לפי מזהה הלקוח
+async function getCustomer(customerId) {
+    let SQL = `SELECT * FROM customers WHERE customer_id = ?;`;
+    const [customer] = await pool.query(SQL, [customerId]);
+    return customer[0];
+}
 
 module.exports = {
     getAllBookings,
     getActiveBookings,
     getPendingBookings: getPendingBookings,
-    newBooking
+    newBooking,
+    getCustomer,
+    getBooking,
+    newCustomer
 }
