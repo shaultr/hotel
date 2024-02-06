@@ -22,7 +22,7 @@ export default function Rooms() {
   const queryParams = queryString.parse(location.search);
   const startDate = queryParams.startDate;
   const endDate = queryParams.endDate;
-  const numBeds = queryParams.numbeds;
+  const numBeds = queryParams.numBeds;
 
   const dates = {
     startDate: startDate,

@@ -1,7 +1,9 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-
+body{
+    user-select: none;
+}
 .registration {
     height: 100vh;
 }
@@ -11,24 +13,43 @@
     /* display: flex; */
     justify-content: center;
     width: 50%;
-    height: 170px;
+    height: 195px;
     border: 1px solid #5c020079;
     margin: 20px auto;
     color: #5c0200c0;
 }
-.date{
+
+.date {
     display: flex;
     gap: 10px;
     border-bottom: 1px solid #5c020079;
     padding: 10px;
     background-color: #a7afa649;
 }
-.info{
-    width: 40%;
+
+.info {
+    position: relative;
+    width: 20%;
     display: flex;
+    flex-direction: column;
     gap: 10px;
-    border-bottom: 1px solid #5c020079;
+    /* border-bottom: 1px solid #5c020079; */
     padding: 10px;
+}
+
+.beds,
+.pension {
+    display: flex;
+    border-bottom: 1px solid #5c020079;
+    justify-content: start;
+
+}
+
+.payment {
+    position: absolute;
+    width: 50%;
+    top: auto;
+    /* background-color: rgb(138, 175, 175); */
 }
 
 .form {

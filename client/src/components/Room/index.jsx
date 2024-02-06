@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-
 export default function Room({ room, difference, dates }) {
   const [pension, setPension] = useState(false);
 
@@ -15,7 +14,8 @@ export default function Room({ room, difference, dates }) {
 
 
   const registration = () => {
-    navigate(`/registration/?room_id=${room_id}&payment_amount=${total}&startDate=${startDate}&endDate=${endDate}`);
+    extension === 0 && navigate(`/registration/?room_id=${room_id}&payment_amount=${total}&startDate=${startDate}&endDate=${endDate}&numBeds=${num_beds}`);
+    extension > 0 && navigate(`/registration/?room_id=${room_id}&payment_amount=${total}&startDate=${startDate}&endDate=${endDate}&numBeds=${num_beds}&pension=${pension}`);
   }
   const [images, setImages] = useState([]);
 
@@ -25,11 +25,12 @@ export default function Room({ room, difference, dates }) {
   }, [])
 
   const [extension, setExtension] = useState(0);
-  const handlePension = ()=>{
+  const handlePension = () => {
     setPension(!pension);
-    extension===0 ?  setExtension(300): setExtension(0);
+    extension === 0 ? setExtension(300) : setExtension(0);
   }
   const total = price_per_night * difference + extension;
+  console.log(num_beds);
 
   return (
     <div className={styles.room}>
@@ -69,13 +70,13 @@ export default function Room({ room, difference, dates }) {
             <h4 > {parseInt(price_per_night)}</h4>
           </div>
 
-          <div className={styles.l} style={{ backgroundColor: pension && "#cea100" }} >
+          <div className={styles.l} style={{ backgroundColor: pension && "#cea1005c" }} >
             <h4>   🍽️ </h4>
             <h4>  חצי פנסיון </h4>
             <h4>    {parseInt(price_per_night) + 300}</h4>
             <div className={styles.choise} onClick={handlePension}>
-              {pension? "בטל":"בחר"}
-              </div>
+              {pension ? "בטל" : "בחר"}
+            </div>
 
           </div>
 

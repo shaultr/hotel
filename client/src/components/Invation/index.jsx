@@ -23,7 +23,7 @@ const Invation = () => {
   const handleButtonClick = () => {
     const formattedStartDate = startDate ? format(startDate, "yyyy-MM-dd") : null;
     const formattedEndDate = endDate ? format(endDate, "yyyy-MM-dd") : null;
-    navigate('/rooms?startDate=' + formattedStartDate + '&endDate=' + formattedEndDate + '&numbeds=' + numBeds)
+    navigate('/rooms?startDate=' + formattedStartDate + '&endDate=' + formattedEndDate + '&numBeds=' + numBeds)
   }
 
   const handlePlus = () => {
@@ -64,7 +64,7 @@ const Invation = () => {
         startDate={startDate}
         endDate={endDate}
         minDate={currentDate}
-        dateFormat= "yyyy MMM dd"
+        // dateFormat= "yyyy MMM dd"
       />
 
       <Popup trigger={
