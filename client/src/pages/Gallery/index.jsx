@@ -1,6 +1,8 @@
 import styles from './style.module.css';
 import { useState, useEffect } from 'react';
+import Popup from 'reactjs-popup';
 import axios from 'axios';
+import PopupGallery from './PopupGallery';
 
 export default function Gallery() {
   const [images, setImages] = useState([]);
@@ -8,7 +10,6 @@ export default function Gallery() {
   const getImages = async () => {
     try {
       const { data } = await axios.get(`http://localhost:8000/images/`)
-      console.log(data);
       setImages(data);
     }
     catch (err) {
@@ -16,22 +17,33 @@ export default function Gallery() {
     }
   };
 
-    useEffect(() => {
-      getImages()
-    }, []);
+  useEffect(() => {
+    getImages()
+  }, []);
 
-    const showImages = () => {
+  const showImages = () => {
 
-      return images.map(image =>
+    return images.map((image, index) =>
+
+      <Popup trigger={
         <div className={styles.image}>
-          <img src = {image?.image_url} />
+          <div className={styles.backImage}>
+            <div className={styles.circle}>➕</div>
+          </div>
+          <img src={image?.image_url} />
         </div>
-      )
-    };
+      } position="right center">
+        <PopupGallery index={index} images={images} />
+      </Popup>
+
+
+
+    )
+  };
 
   return (
     <div className={styles.container}>
       {showImages()}
-      </div>
+    </div>
   )
-  }
+}

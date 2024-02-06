@@ -44,7 +44,7 @@ const Invation = () => {
   return (
     <div className={style.invation}>
       <div className={style.title} >Invation</div>
-      <button onClick={handleButtonClick}>חפש חדרים</button>
+      <button onClick={handleButtonClick}>חפש </button>
       <DatePicker
         id="endDate"
         selected={endDate}

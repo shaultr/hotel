@@ -7,12 +7,28 @@
 }
 
 .invation {
-    display: flex;
+    direction: rtl;
+    /* display: flex; */
     justify-content: center;
     width: 50%;
     height: 170px;
-    border: 1px solid black;
+    border: 1px solid #5c020079;
     margin: 20px auto;
+    color: #5c0200c0;
+}
+.date{
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid #5c020079;
+    padding: 10px;
+    background-color: #a7afa649;
+}
+.info{
+    width: 40%;
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid #5c020079;
+    padding: 10px;
 }
 
 .form {
@@ -24,7 +40,7 @@
     /* padding-top: 25px; */
     padding-bottom: 25px;
     background-color: #a7afa6;
-    box-shadow: 0px 0px 10px 10px #5c020079;
+    box-shadow: 0px 0px 5px 5px #5c020079;
 }
 
 form {

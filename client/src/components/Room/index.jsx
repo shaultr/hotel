@@ -15,7 +15,7 @@ export default function Room({ room, difference, dates }) {
 
 
   const registration = () => {
-    navigate(`/registration/?room_id=${room_id}&payment_amount=${price_per_night * difference}&startDate=${startDate}&endDate=${endDate}`);
+    navigate(`/registration/?room_id=${room_id}&payment_amount=${total}&startDate=${startDate}&endDate=${endDate}`);
   }
   const [images, setImages] = useState([]);
 
@@ -24,6 +24,12 @@ export default function Room({ room, difference, dates }) {
       .then((i) => setImages(i.data))
   }, [])
 
+  const [extension, setExtension] = useState(0);
+  const handlePension = ()=>{
+    setPension(!pension);
+    extension===0 ?  setExtension(300): setExtension(0);
+  }
+  const total = price_per_night * difference + extension;
 
   return (
     <div className={styles.room}>
@@ -56,14 +62,21 @@ export default function Room({ room, difference, dates }) {
             <h4>{" מספר מיטות: " + num_beds}</h4>
           </div>
 
-          <div className={styles.b} style={{ backgroundColor: pension && "#cea100" }} onClick={() => setPension(!pension)}>
-            <h4 >לינה וארוחת בוקר</h4>
+          <div className={styles.basic} >
+            <h4> ☕</h4>
+            <h4 >לינה וארוחת בוקר </h4>
+
             <h4 > {parseInt(price_per_night)}</h4>
           </div>
 
-          <div className={styles.l}>
+          <div className={styles.l} style={{ backgroundColor: pension && "#cea100" }} >
+            <h4>   🍽️ </h4>
             <h4>  חצי פנסיון </h4>
             <h4>    {parseInt(price_per_night) + 300}</h4>
+            <div className={styles.choise} onClick={handlePension}>
+              {pension? "בטל":"בחר"}
+              </div>
+
           </div>
 
         </div>
@@ -72,7 +85,7 @@ export default function Room({ room, difference, dates }) {
             מחיר עבור לילה:{price_per_night}
             <br />
             עבור {difference} ימים :</div>
-          {price_per_night * difference}
+          {total}
 
           <div className={styles.butten} onClick={registration}> הזמן עכשיו</div>
         </div>

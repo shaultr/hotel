@@ -5,3 +5,12 @@
     flex-direction: column;
     height: 15%;
 }
+.title{
+    color: #5c0100
+    ;
+}
+.a:hover{
+    border-bottom: 1px solid black;
+    color: #5c0100
+
+}

@@ -28,7 +28,6 @@ export default function Rooms() {
     startDate: startDate,
     endDate: endDate
   }
-  console.log(numBeds);
   const [rooms, setRooms] = useState([]);
   const [difference, setDifference] = useState(0);
   const getRooms = async () => {
@@ -55,11 +54,13 @@ export default function Rooms() {
   const arrStartData = startDate.split('-');
   let sday = parseInt(arrStartData[2], 10);
   let smonth = parseInt(arrStartData[1], 10)
+  let syear = parseInt(arrStartData[0], 10)
 
 
   let arrEndData = endDate.split('-');
   let eday = parseInt(arrEndData[2], 10);
   let emonth = parseInt(arrEndData[1], 10);
+  let eyear = parseInt(arrEndData[0], 10);
 
   const monthNames = [
     "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני",
@@ -68,11 +69,14 @@ export default function Rooms() {
 
   return (
     <div>
-      <h1>
-        {"חדרים פנוים בין " + sday + " ל" + monthNames[smonth - 1] + " "
-          + "ובין" + " " + eday + " ל" + monthNames[emonth - 1]
-        }
-      </h1>
+      <div className={styles.searchResults}>
+        <h3 className={styles.title}>פרטי חיפוש</h3>
+        <br />
+        <h4> מספר מיטות: {numBeds} </h4>
+        <h4>   החל מ- {sday + " " + monthNames[smonth - 1] + " " + syear} </h4>
+        <h4>    עד {eday + " " + monthNames[emonth - 1] + " " + eyear} </h4>
+
+      </div>
 
       <div className={styles.rooms}>
         {showRooms()}
