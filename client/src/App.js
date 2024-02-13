@@ -1,7 +1,7 @@
 import styles from './style.module.css';
 import Layout from './Layout';
 import { BrowserRouter } from 'react-router-dom';
-import Admin from './pages/admin';
+import Admin from './pages/Admin';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {

@@ -43,7 +43,7 @@ export default function Rooms() {
   useEffect(() => {
     setDifference(calculateDateDifference());
     getRooms()
-  }, []);
+  }, [startDate,endDate , numBeds]);
 
   const showRooms = () => {
 

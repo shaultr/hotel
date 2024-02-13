@@ -4,9 +4,19 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import jsPDF from 'jspdf';
+// import { useFormik } from 'formik';
+// import * as Yup from 'yup';
+
 
 export default function Registration() {
   const location = useLocation();
+
+
+  // const validationSchema = Yup.object().shape({
+  //   fullName: Yup.string().required('שם מלא הוא שדה חובה'),
+  //   email: Yup.string().email('כתובת דוא"ל לא תקינה').required('דוא"ל הוא שדה חובה'),
+  //   phone: Yup.string().matches(/^[0-9]+$/, 'מספר הטלפון יכול לכלול רק מספרים').required('מספר טלפון הוא שדה חובה'),
+  // });
 
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -29,7 +39,6 @@ export default function Registration() {
       console.error('Error occurred during authentication:', error);
     }
   };
-  console.log('fullName' + fullName);
   const handleSubmit = () => {
     if (fullName === '' || phoneNumber === '' || email === '') {
       alert(" הזן את כל הנתונים!!")
@@ -69,7 +78,7 @@ export default function Registration() {
   const print = () => {
     const doc = new jsPDF();
     doc.
-    doc.text('wellcome ' + fullName + '. Booking a room with ' + numBeds + ' beds, between the dates ' + startDate + ' and ' + endDate + ' a total of ' + numDays + ' days. Total payable ' + payment_amount, 10, 10);
+      doc.text('wellcome ' + fullName + '. Booking a room with ' + numBeds + ' beds, between the dates ' + startDate + ' and ' + endDate + ' a total of ' + numDays + ' days. Total payable ' + payment_amount, 10, 10);
     doc.save('your_booking.pdf');
     setSuccess(false);
 
@@ -143,7 +152,7 @@ export default function Registration() {
         </label>
 
         <button type="button" onClick={handleSubmit}>
-          הזמן
+          שלח
         </button>
       </form>
     </div> : <div>

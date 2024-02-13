@@ -30,7 +30,7 @@ function validation(req, res, next) {
 
 
 //get all rooms available by date
-rooms.get('/:start_date/:end_date/:numbeds',validation, async (req, res) => {
+rooms.get('/:start_date/:end_date/:numbeds', async (req, res) => {
      
     try {
         const data = await functions.getRoomsAvailables(req.params.start_date, req.params.end_date , req.params.numbeds);
