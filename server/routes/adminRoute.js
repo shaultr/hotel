@@ -1,8 +1,23 @@
 const express = require("express");
-const { newCustomer, getCustomer, newBooking, getBooking, getPendingBookings, getActiveBookings,
+const {isAdmin, newCustomer, getCustomer, newBooking, getBooking, getPendingBookings, getActiveBookings,
     getAllBookings } = require("../../database/bookingQuery");
 
 const adminRoute = express.Router();
+
+adminRoute.get('/validation/:name/:email', async (req, res) => {
+    try {
+        const [customer] = await isAdmin(req.params.name, req.params.email);
+        if (customer?.is_admin === 1) {
+            res.json(customer);
+        }
+        else {
+            res.status(401).send("Invalid")
+        }
+    }
+    catch (err) {
+        console.log(err);
+    }
+})
 
 adminRoute.post("/newBooking", async (req, res) => {
     try {

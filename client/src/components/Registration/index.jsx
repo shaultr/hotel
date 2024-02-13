@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
+import jsPDF from 'jspdf';
 
 export default function Registration() {
   const location = useLocation();
 
-  const [fullName, setFullName] = useState();
-  const [phoneNumber, setPhoneNumber] = useState();
-  const [email, setEmail] = useState();
+  const [fullName, setFullName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const queryParams = queryString.parse(location.search);
   const room_id = queryParams.room_id;
@@ -18,24 +20,22 @@ export default function Registration() {
   const endDate = queryParams.endDate;
   const numBeds = queryParams.numBeds;
   const pension = queryParams.pension;
-  console.log("payment_amount & roomId:", payment_amount, room_id);
+
   const signedUp = async () => {
     try {
       const response = await axios.post(`http://localhost:8000/admin/newBooking`, { fullName: fullName, phoneNumber: phoneNumber, email: email, room_id: room_id, payment_amount: payment_amount, startDate: startDate, endDate: endDate });
       console.log("response:", response.data);
-      // setComment([...comment, response.data]);
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
   };
-
+  console.log('fullName' + fullName);
   const handleSubmit = () => {
-    if (fullName === null || phoneNumber === null || email === null) {
-      alert("אנה הזן את כל הנתונים!!")
+    if (fullName === '' || phoneNumber === '' || email === '') {
+      alert(" הזן את כל הנתונים!!")
     } else {
       signedUp();
-
-
+      setSuccess(true);
     }
 
   };
@@ -66,7 +66,13 @@ export default function Registration() {
   let emonth = parseInt(arrEndData[1], 10);
   let eyear = parseInt(arrEndData[0], 10)
 
+  const print = () => {
+    const doc = new jsPDF();
+    doc.text('wellcome ' + fullName + '. Booking a room with ' + numBeds + ' beds, between the dates ' + startDate + ' and ' + endDate + ' a total of ' + numDays + ' days. Total payable ' + payment_amount, 10, 10);
+    doc.save('your_booking.pdf');
+    setSuccess(false);
 
+  }
   return (<div className={style.registration}>
     <div className={style.invation}>
       <div className={style.date}>
@@ -88,17 +94,18 @@ export default function Registration() {
 
 
       </div>
-        <div className={style.payment}>
-          <h2>לתשלום</h2>
-          <h2>{payment_amount}</h2>
-        </div>
+      <div className={style.payment}>
+        <h2>לתשלום</h2>
+        <h2>{payment_amount}</h2>
+      </div>
     </div>
 
-    <div className={style.form}>
+    {!success ? <div className={style.form}>
       <div className={style.title}>Registration</div>
       <form >
         <label>
           <input
+            className={style.input}
             placeholder='Full Name:'
             type="text"
             value={fullName}
@@ -111,16 +118,11 @@ export default function Registration() {
 
         <label>
           <input
+            className={style.input}
             placeholder='Phone Number:'
             type="tel"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            // onKeyPress={(e) => {
-            //   const charCode = e.which ? e.which : e.keyCode;
-            //   if (charCode < 48 || charCode > 57) {
-            //     e.preventDefault();
-            //   }
-            // }}
             required
           />
 
@@ -128,6 +130,7 @@ export default function Registration() {
 
         <label>
           <input
+            className={style.input}
             placeholder='Email:'
             type="email"
             value={email}
@@ -142,6 +145,10 @@ export default function Registration() {
           Submit
         </button>
       </form>
-    </div></div>
+    </div> : <div>
+      הזמנתך התקבלה בהצלחה
+      <div className={style.print} onClick={print}>הדפס פרטי הזמנה</div>
+    </div>}
+  </div>
   );
 }

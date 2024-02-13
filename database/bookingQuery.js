@@ -1,5 +1,12 @@
 const pool = require('./main');
 
+
+async function isAdmin(name, email) {
+    const SQL = `SELECT * FROM customers WHERE full_name = ? AND email = ?`;
+    const [data] = await pool.query(SQL,[name, email]);
+    console.log(data);
+    return data;
+}
 //get all bookings for administration
 async function getAllBookings() {
     const SQL = `SELECT * FROM bookings ORDER BY booking_id DESC`;
@@ -61,6 +68,7 @@ async function getCustomer(customerId) {
 }
 
 module.exports = {
+    isAdmin,
     getAllBookings,
     getActiveBookings,
     getPendingBookings: getPendingBookings,

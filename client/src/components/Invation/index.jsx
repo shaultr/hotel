@@ -18,12 +18,19 @@ const Invation = () => {
   let nextDate = addDays(currentDate, 1);
   const navigate = useNavigate();
 
-  const [choiseEndDate, setChoiseEndDate] = useState(nextDate);
+  const [endBefore, setEndBefore] = useState(false);
 
+  const [choiseEndDate, setChoiseEndDate] = useState(nextDate);
   const handleButtonClick = () => {
     const formattedStartDate = startDate ? format(startDate, "yyyy-MM-dd") : null;
     const formattedEndDate = endDate ? format(endDate, "yyyy-MM-dd") : null;
-    navigate('/rooms?startDate=' + formattedStartDate + '&endDate=' + formattedEndDate + '&numBeds=' + numBeds)
+    if (startDate < endDate) {
+      setEndBefore(false)
+      navigate('/rooms?startDate=' + formattedStartDate + '&endDate=' + formattedEndDate + '&numBeds=' + numBeds)
+    }
+    else {
+      setEndBefore(true)
+    }
   }
 
   const handlePlus = () => {
@@ -43,32 +50,32 @@ const Invation = () => {
 
   return (
     <div className={style.invation}>
-      <div className={style.title} >Invation</div>
+      <div className={style.title} >צאו לחופשה</div>
       <button onClick={handleButtonClick}>חפש </button>
       <DatePicker
         id="endDate"
         selected={endDate}
-        onChange={(date) => setEndDate(date)}
+        onChange={(date) => {setEndDate(date);setEndBefore(false)}}
         selectsEnd
         startDate={startDate}
         endDate={endDate}
         minDate={choiseEndDate}
-        dateFormat= "yyyy MMM dd"
+        dateFormat="yyyy MMM dd"
         />
       <DatePicker
         placeholderText={day + " " + month + " " + year}
         id="startDate"
         selected={startDate}
-        onChange={(date) => choiseDates(date)}
+        onChange={(date) => {choiseDates(date);setEndBefore(false)}}
         selectsStart
         startDate={startDate}
         endDate={endDate}
         minDate={currentDate}
-        // dateFormat= "yyyy MMM dd"
-      />
+        dateFormat="yyyy MMM dd"
+        />
 
       <Popup trigger={
-        <input type='text' placeholder={`   ${numBeds}  אורחים`} />
+        <input style={{cursor: 'pointer'}} type='text' placeholder={`   ${numBeds}  אורחים`} />
       } position="right center">
 
         <div className={style.numbeds}>
@@ -82,7 +89,8 @@ const Invation = () => {
           בחר מספר אורחים:
         </div>
       </Popup>
-    </div>
+      {endBefore && <div style={{ color: "red" }}>!תאריך ההתחלה מוקדם מתאריך הסיום</div>
+      }    </div>
   );
 };
 export default Invation;
