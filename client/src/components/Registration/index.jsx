@@ -68,6 +68,7 @@ export default function Registration() {
 
   const print = () => {
     const doc = new jsPDF();
+    doc.
     doc.text('wellcome ' + fullName + '. Booking a room with ' + numBeds + ' beds, between the dates ' + startDate + ' and ' + endDate + ' a total of ' + numDays + ' days. Total payable ' + payment_amount, 10, 10);
     doc.save('your_booking.pdf');
     setSuccess(false);
@@ -101,7 +102,7 @@ export default function Registration() {
     </div>
 
     {!success ? <div className={style.form}>
-      <div className={style.title}>Registration</div>
+      <div className={style.title}>הרשמה</div>
       <form >
         <label>
           <input
@@ -142,7 +143,7 @@ export default function Registration() {
         </label>
 
         <button type="button" onClick={handleSubmit}>
-          Submit
+          הזמן
         </button>
       </form>
     </div> : <div>

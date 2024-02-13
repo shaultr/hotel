@@ -4,7 +4,7 @@ const {isAdmin, newCustomer, getCustomer, newBooking, getBooking, getPendingBook
 
 const adminRoute = express.Router();
 
-adminRoute.get('/validation/:name/:email', async (req, res) => {
+adminRoute.get('/authentication/:name/:email', async (req, res) => {
     try {
         const [customer] = await isAdmin(req.params.name, req.params.email);
         if (customer?.is_admin === 1) {
