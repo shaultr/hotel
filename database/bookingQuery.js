@@ -14,18 +14,33 @@ async function getAllBookings() {
     return data;// return array of object
 }
 
-//get all bookings actives for administration 
+// get all bookings actives for administration 
 async function getActiveBookings() {
-    const SQL = `SELECT * FROM bookings WHERE booking_status = 'Confirmed' ORDER BY booking_id DESC`;
-    const [data] = await pool.query(SQL);
+    const SQL = `SELECT *
+    FROM bookings
+    WHERE CURDATE() BETWEEN start_date AND end_date
+    ORDER BY booking_id DESC`;
+        const [data] = await pool.query(SQL);
+    return data;
+}
+
+// get all bookings that finished before 
+async function getFinishedBookings() {
+    const SQL = `SELECT *
+    FROM bookings
+    WHERE end_date < CURDATE()
+    ORDER BY booking_id DESC`;
+        const [data] = await pool.query(SQL);
     return data;
 }
 
 
-
 //get all bookings pending for administration 
 async function getPendingBookings() {
-    const SQL = `SELECT * FROM bookings WHERE booking_status = 'Pending' ORDER BY booking_id DESC`;
+    const SQL = `SELECT *
+    FROM bookings
+    WHERE start_date > CURDATE()
+    ORDER BY booking_id DESC`;
     const [data] = await pool.query(SQL);
     console.log(data);
     return data;
@@ -67,13 +82,24 @@ async function getCustomer(customerId) {
     return customer[0];
 }
 
+async function deleteBooking(bookingId) {
+    const result = await getBooking(bookingId)
+    const SQL = `DELETE FROM bookings
+    WHERE booking_id = ?`;
+    const [data] = await pool.query(SQL, [bookingId]);
+    console.log(result);
+    return result
+    };
+
 module.exports = {
     isAdmin,
     getAllBookings,
     getActiveBookings,
-    getPendingBookings: getPendingBookings,
+    getFinishedBookings,
+    getPendingBookings,
     newBooking,
     getCustomer,
     getBooking,
-    newCustomer
+    newCustomer,
+    deleteBooking
 }

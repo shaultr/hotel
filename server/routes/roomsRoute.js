@@ -4,23 +4,6 @@ const rooms = express.Router();
 const functions = require('../../database/roomsQuery')
 
 
-function validation(req, res, next) {
-    const schemaNumBeds = joi.number().min(1);
-    const schemaStartDate = joi.date().min(new Date());
-    const schemaEndDate = joi.date().min(new Date());
-
-    const { error: errorNumBeds } = schemaNumBeds.validate(req.params.numbeds);
-    const { error: errorStartDate } = schemaStartDate.validate(req.params.start_date);
-    const { error: errorEndDate } = schemaEndDate.validate(req.params.end_date);
-
-    if (errorNumBeds || errorStartDate || errorEndDate) {
-        res.status(400).send(errorNumBeds ? errorNumBeds.details[0].message : (errorStartDate ? errorStartDate.details[0].message : errorEndDate.details[0].message));
-        return;
-    }
-
-    next();
-}
-
 
 
 //get all rooms available by date

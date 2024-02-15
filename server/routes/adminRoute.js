@@ -1,8 +1,9 @@
 const express = require("express");
 const {isAdmin, newCustomer, getCustomer, newBooking, getBooking, getPendingBookings, getActiveBookings,
-    getAllBookings } = require("../../database/bookingQuery");
+    getAllBookings,getFinishedBookings,deleteBooking } = require("../../database/bookingQuery");
 
 const adminRoute = express.Router();
+
 
 adminRoute.get('/authentication/:name/:email', async (req, res) => {
     try {
@@ -18,6 +19,18 @@ adminRoute.get('/authentication/:name/:email', async (req, res) => {
         console.log(err);
     }
 })
+
+adminRoute.get("/getCustomer/:cust", async (req, res) => {
+    try {
+        const cust = await getCustomer(req.params.cust);
+        res.json(cust);
+        // console.log("cust");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send();
+    }
+});
+
 
 adminRoute.post("/newBooking", async (req, res) => {
     try {
@@ -47,32 +60,6 @@ adminRoute.get("/getBooking/:book", async (req, res) => {
     }
 });
 
-adminRoute.get("/getPeddingBookings", async () => {
-    try {
-        const pending = await getPendingBookings();
-        if (pending) {
-            res.json(pending);
-            return;
-        }
-        res.status(404).send();
-    } catch (error) {
-        res.status(500).send();
-    }
-}
-);
-adminRoute.get("/getActiveBookings", async (req, res) => {
-    try {
-        const activies = await getActiveBookings();
-        if (activies) {
-            res.json(activies);
-            return;
-        }
-        res.status(404).send();
-    } catch (error) {
-        res.status(500).send();
-    }
-}
-);
 adminRoute.get("/getAllBookings", async (req, res) => {
     try {
         const bookings = await getAllBookings();
@@ -86,5 +73,60 @@ adminRoute.get("/getAllBookings", async (req, res) => {
     }
 }
 );
+adminRoute.get("/getActiveBookings", async (req, res) => {
+    try {
+        const activies = await getActiveBookings();
+        if (activies) { 
+            res.json(activies);
+            return;
+        }
+        res.status(404).send();
+    } catch (error) {
+        res.status(500).send();
+    }
+}
+);
+adminRoute.get("/getFinishedBookings", async (req, res) => {
+    try {
+        const bookings = await getFinishedBookings();
+        if (bookings) {
+            res.json(bookings);
+            return;
+        }
+        res.status(404).send();
+    } catch (error) {
+        res.status(500).send();
+    }
+}
+);
 
+
+adminRoute.get("/getPendingBookings", async (req, res) => {
+    try {
+        const pending = await getPendingBookings();
+        if (pending) {
+            res.json(pending); 
+            return;
+        }
+        res.status(404).send();
+    } catch (error) {
+        res.status(500).send();
+    }
+}
+);
+
+adminRoute.delete('/:bookingId', async (req, res) => {
+    try {
+        const data = await deleteBooking(req.params.bookingId);
+        if (data) {
+            res.json(data);
+            return;
+        } 
+        res.status(404).send();
+    }
+    catch (error) {
+        res.status(500).send();
+    };
+
+});
 module.exports = adminRoute;
