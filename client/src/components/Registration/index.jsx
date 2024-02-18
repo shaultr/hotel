@@ -4,19 +4,25 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import jsPDF from 'jspdf';
-// import { useFormik } from 'formik';
-// import * as Yup from 'yup';
-
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup'
 
 export default function Registration() {
+  const schema = Yup.object().shape({
+    fullName: Yup.string().required('שם מלא הוא שדה חובה'),
+    email: Yup.string().email('כתובת דוא"ל לא תקינה').required('דוא"ל הוא שדה חובה'),
+    phone: Yup.string().matches(/^[0-9]+$/, 'מספר הטלפון יכול לכלול רק מספרים').required('מספר טלפון הוא שדה חובה'),
+  });
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+  });
+
   const location = useLocation();
 
 
-  // const validationSchema = Yup.object().shape({
-  //   fullName: Yup.string().required('שם מלא הוא שדה חובה'),
-  //   email: Yup.string().email('כתובת דוא"ל לא תקינה').required('דוא"ל הוא שדה חובה'),
-  //   phone: Yup.string().matches(/^[0-9]+$/, 'מספר הטלפון יכול לכלול רק מספרים').required('מספר טלפון הוא שדה חובה'),
-  // });
+
 
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -39,14 +45,9 @@ export default function Registration() {
       console.error('Error occurred during authentication:', error);
     }
   };
-  const handleSubmit = () => {
-    if (fullName === '' || phoneNumber === '' || email === '') {
-      alert(" הזן את כל הנתונים!!")
-    } else {
-      signedUp();
-      setSuccess(true);
-    }
-
+  const onSubmit = () => {
+    signedUp();
+    setSuccess(true);
   };
 
   function calculateDateDifference() {
@@ -112,48 +113,33 @@ export default function Registration() {
 
     {!success ? <div className={style.form}>
       <div className={style.title}>הרשמה</div>
-      <form >
-        <label>
-          <input
-            className={style.input}
-            placeholder='Full Name:'
-            type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            pattern="[A-Za-z]+\s[A-Za-z]+"
-            title="Please enter first and last names"
-            required
-          />
-        </label>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input className={style.input}
+          placeholder='שם מלא...' {...register('fullName')}
+          type="text"
+          onChange={(e) => setFullName(e.target.value)}
+        />
 
-        <label>
-          <input
-            className={style.input}
-            placeholder='Phone Number:'
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
+        <input
+          className={style.input}
+          placeholder='מספר טלפון...' {...register('phone')}
+          type="text"
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
 
-        </label>
+        <input
+          className={style.input}
+          placeholder='דואר אלקטרוני...'{...register('email')}
+          type="text"
+          onChange={(e) => setEmail(e.target.value)}
+         
+        />
+        <p>{errors.email?.message}</p>
+        <p>{errors.phone?.message}</p>
+        <p>{errors.fullName?.message}</p>
 
-        <label>
-          <input
-            className={style.input}
-            placeholder='Email:'
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            pattern=".+@.+\..+"
-            title="Please enter a valid email address"
-            required
-          />
-        </label>
+        <input type='submit' />
 
-        <button type="button" onClick={handleSubmit}>
-          שלח
-        </button>
       </form>
     </div> : <div>
       הזמנתך התקבלה בהצלחה
