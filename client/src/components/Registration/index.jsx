@@ -24,9 +24,9 @@ export default function Registration() {
 
 
 
-  const [fullName, setFullName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
+  const [customerName, setCustomerName] = useState('');
+  // const [phoneNumber, setPhoneNumber] = useState('');
+  // const [email, setEmail] = useState('');
   const [success, setSuccess] = useState(false);
 
   const queryParams = queryString.parse(location.search);
@@ -37,16 +37,19 @@ export default function Registration() {
   const numBeds = queryParams.numBeds;
   const pension = queryParams.pension;
 
-  const signedUp = async () => {
+  const signedUp = async (data) => {
     try {
-      const response = await axios.post(`http://localhost:8000/admin/newBooking`, { fullName: fullName, phoneNumber: phoneNumber, email: email, room_id: room_id, payment_amount: payment_amount, startDate: startDate, endDate: endDate });
+      const response = await axios.post(`http://localhost:8000/admin/newBooking`, { fullName: data.fullName, phoneNumber: data.phoneNumber, email: data.email, room_id: room_id, payment_amount: payment_amount, startDate: startDate, endDate: endDate });
       console.log("response:", response.data);
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
   };
-  const onSubmit = () => {
-    signedUp();
+  const onSubmit = (data) => {
+    console.log(data);
+    setCustomerName(data.fullName);
+    console.log(data);
+    signedUp(data);
     setSuccess(true);
   };
 
@@ -78,8 +81,16 @@ export default function Registration() {
 
   const print = () => {
     const doc = new jsPDF();
-    doc.
-      doc.text('wellcome ' + fullName + '. Booking a room with ' + numBeds + ' beds, between the dates ' + startDate + ' and ' + endDate + ' a total of ' + numDays + ' days. Total payable ' + payment_amount, 10, 10);
+    doc.text('Welcome ' + customerName, 10, 10);
+    doc.text('____________________', 10, 20);
+    doc.text('Booking details:', 10, 30);
+    doc.text('- Room with ' + numBeds + ' beds', 10, 40);
+    doc.text('- Dates: ' + startDate + ' to ' + endDate, 10, 50);
+    doc.text('- Total days: ' + numDays, 10, 60);
+    doc.text('________', 10, 70);
+    doc.text('Total payable: ', 10, 90);
+    doc.text(payment_amount, 10, 100);
+    
     doc.save('your_booking.pdf');
     setSuccess(false);
 
@@ -112,26 +123,23 @@ export default function Registration() {
     </div>
 
     {!success ? <div className={style.form}>
-      <div className={style.title}>הרשמה</div>
+      <div className={style.title}>הרשמה והזמנה</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input className={style.input}
           placeholder='שם מלא...' {...register('fullName')}
           type="text"
-          onChange={(e) => setFullName(e.target.value)}
         />
 
         <input
           className={style.input}
           placeholder='מספר טלפון...' {...register('phone')}
           type="text"
-          onChange={(e) => setPhoneNumber(e.target.value)}
         />
 
         <input
           className={style.input}
           placeholder='דואר אלקטרוני...'{...register('email')}
           type="text"
-          onChange={(e) => setEmail(e.target.value)}
          
         />
         <p>{errors.email?.message}</p>

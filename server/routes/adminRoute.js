@@ -1,8 +1,9 @@
 const express = require("express");
+
 const {isAdmin, newCustomer, getCustomer, newBooking, getBooking, getPendingBookings, getActiveBookings,
     getAllBookings,getFinishedBookings,deleteBooking } = require("../../database/bookingQuery");
 
-const adminRoute = express.Router();
+const adminRoute = express.Router(); 
 
 
 adminRoute.get('/authentication/:name/:email', async (req, res) => {
