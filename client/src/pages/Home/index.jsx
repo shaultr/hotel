@@ -23,13 +23,15 @@ export default function Home() {
 
                 <div className={style.abaut}>
 
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit nihil et cum laborum quis dolores, quia, pariatur ab minima eaque alias, adipisci ut aliquid repudiandae ipsam animi ullam suscipit veritatis!
+                    Lorem ipsum dolor sit amet  elit.  dolores, quia, pariatur ab minima eaque alias, adipisci ut aliquid repudiandae ipsam animi ullam suscipit veritatis!
                     <br />
                     <br />
                     <img src={images[currentImageIndex]} />
                     <br />
                     <br />
+                 <p className={style.infoRespon}>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit nihil et cum laborum quis dolores, quia, pariatur ab minima eaque alias, adipisci ut aliquid repudiandae ipsam animi ullam suscipit veritatis!
+                    </p>
                 </div>
 
 

@@ -4,7 +4,7 @@ const {isAdmin, newCustomer, getCustomer, newBooking, getBooking, getPendingBook
     getAllBookings,getFinishedBookings,deleteBooking } = require("../../database/bookingQuery");
 
 const adminRoute = express.Router(); 
-
+ 
 
 adminRoute.get('/authentication/:name/:email', async (req, res) => {
     try {

@@ -33,8 +33,8 @@ export default function PopUpRoom({images}) {
           {/* <div className={styles.sqr}>
           </div> */}
       </div>
-      <button onClick={prevImage}>&lt;</button>
-      <button onClick={nextImage}>&gt;</button>
+      <button style={{cursor: 'pointer'}} onClick={prevImage}>&lt;</button>
+      <button style={{cursor: 'pointer'}} onClick={nextImage}>&gt;</button>
     </div>
   )
 }
