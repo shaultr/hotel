@@ -33,17 +33,22 @@ adminRoute.get("/getCustomer/:cust", async (req, res) => {
 });
 
 
+adminRoute.post("/newCustomer", async (req, res) => {
+    try {
+        const { fullName, phoneNumber, email} = req.body;
+        const newCust = await newCustomer(fullName, phoneNumber, email);
+        res.json(newCust);
+    } catch (error) {
+        res.status(500).send(); 
+    }
+});
+
 adminRoute.post("/newBooking", async (req, res) => {
     try {
-        const { fullName, phoneNumber, email, room_id, payment_amount, startDate, endDate } = req.body;
-        const newC = await newCustomer(fullName, phoneNumber, email);
-        const customer_id = newC.customer_id;
-
-        const newB = await newBooking(customer_id, room_id, startDate, endDate, payment_amount, 1);
-        res.json(newB);
-        console.log("newB:", newB[0]);
+        const {customer_id, room_id, payment_amount, startDate, endDate } = req.body;
+        const newBooki = await newBooking(customer_id, room_id, startDate, endDate, payment_amount, 1);
+        res.json(newBooki);
     } catch (error) {
-        console.log(error);
         res.status(500).send();
     }
 });

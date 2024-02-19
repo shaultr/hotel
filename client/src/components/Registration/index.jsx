@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 
 export default function Registration() {
+
   const schema = Yup.object().shape({
     fullName: Yup.string().required('שם מלא הוא שדה חובה'),
     email: Yup.string().email('כתובת דוא"ל לא תקינה').required('דוא"ל הוא שדה חובה'),
@@ -17,7 +18,6 @@ export default function Registration() {
     dayDdate: Yup.date().required(),
     yearDate: Yup.date().required()
   });
-
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   });
@@ -28,8 +28,8 @@ export default function Registration() {
 
 
   const [customerName, setCustomerName] = useState('');
-  const [form, setForm] = useState('bookingForm');
-  // registerForm
+  const [form, setForm] = useState('registerForm');
+  const [customerId, setCustomerId] = useState(0);
 
   const queryParams = queryString.parse(location.search);
   const room_id = queryParams.room_id;
@@ -39,23 +39,37 @@ export default function Registration() {
   const numBeds = queryParams.numBeds;
   const pension = queryParams.pension;
 
-  const signedUp = async (data) => {
+  const newCustomer = async (data) => {
+    console.log(data);
     try {
-      const response = await axios.post(`http://localhost:8000/admin/newBooking`, { fullName: data.fullName, phoneNumber: data.phoneNumber, email: data.email, room_id: room_id, payment_amount: payment_amount, startDate: startDate, endDate: endDate });
+      const response = await axios.post(`http://localhost:8000/admin/newCustomer`, { fullName: data.fullName, phoneNumber: data.phoneNumber, email: data.email });
+      setCustomerId(response?.data?.customer_id)
       console.log("response:", response.data);
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
   };
-  const onSubmit = (data) => {
+
+  const newBooking = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8000/admin/newBooking`, {customer_id: customerId, room_id: room_id, payment_amount: payment_amount, startDate: startDate, endDate: endDate });
+      console.log("response:", response.data);
+    } catch (error) {
+      console.error('Error occurred during authentication:', error);
+    }
+  };
+
+
+  const onSubmitCustomer = (data) => {
     console.log(data);
+    newCustomer(data);
     setCustomerName(data.fullName);
-    console.log(data);
-    signedUp(data);
     setForm('bookingForm');
   };
+  
   const onSubmitBooking = (data) => {
-    alert('creditNumber')
+    console.log(data);
+    newBooking()
     setForm('success');
   }
 
@@ -131,7 +145,7 @@ export default function Registration() {
     {form === 'registerForm' &&
       <div className={style.form}>
         <div className={style.title}>הרשמה </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmitCustomer)}>
           <input className={style.input}
             placeholder='שם מלא...' {...register('fullName')}
             type="text"
