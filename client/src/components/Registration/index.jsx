@@ -13,7 +13,9 @@ export default function Registration() {
     fullName: Yup.string().required('שם מלא הוא שדה חובה'),
     email: Yup.string().email('כתובת דוא"ל לא תקינה').required('דוא"ל הוא שדה חובה'),
     phone: Yup.string().matches(/^[0-9]+$/, 'מספר הטלפון יכול לכלול רק מספרים').required('מספר טלפון הוא שדה חובה'),
-    creditNumber: Yup.number().min(10).required('מספר אשראי לא תקין')
+    creditNumber: Yup.number().min(1000000000, 'מספר אשראי יכול לכלול לפחות 10 ספרות').required('מספר אשראי לא תקין'),
+    dayDdate: Yup.date().required(),
+    yearDate: Yup.date().required()
   });
 
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -27,6 +29,7 @@ export default function Registration() {
 
   const [customerName, setCustomerName] = useState('');
   const [form, setForm] = useState('bookingForm');
+  // registerForm
 
   const queryParams = queryString.parse(location.search);
   const room_id = queryParams.room_id;
@@ -126,72 +129,74 @@ export default function Registration() {
     </div>
 
     {form === 'registerForm' &&
-    <div className={style.form}>
-      <div className={style.title}>הרשמה </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input className={style.input}
-          placeholder='שם מלא...' {...register('fullName')}
-          type="text"
-        />
+      <div className={style.form}>
+        <div className={style.title}>הרשמה </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input className={style.input}
+            placeholder='שם מלא...' {...register('fullName')}
+            type="text"
+          />
 
-        <input
-          className={style.input}
-          placeholder='מספר טלפון...' {...register('phone')}
-          type="text"
-        />
+          <input
+            className={style.input}
+            placeholder='מספר טלפון...' {...register('phone')}
+            type="text"
+          />
 
-        <input
-          className={style.input}
-          placeholder='דואר אלקטרוני...'{...register('email')}
-          type="text"
+          <input
+            className={style.input}
+            placeholder='דואר אלקטרוני...'{...register('email')}
+            type="text"
 
-        />
-        <p>{errors.email?.message}</p>
-        <p>{errors.phone?.message}</p>
-        <p>{errors.fullName?.message}</p>
+          />
+          <p>{errors.email?.message}</p>
+          <p>{errors.phone?.message}</p>
+          <p>{errors.fullName?.message}</p>
 
-        <input type='submit' />
+          <input type='submit' />
 
-      </form>
-    </div>}
-    {form === 'bookingForm'&&
-    <div className={style.formbooking}>
-    <div className={style.title}> פרטי כרטיס אשראי</div>
-    <form onSubmit={handleSubmit(onSubmitBooking)}>
-      <input className={style.input}
-        placeholder=' מספר כרטיס...' {...register('creditNumber')}
-        type="text"
-      />
-<div>
-
-
-<select className={style.input} {...register('date')} defaultValue="01">
-          <option>01</option>
-          <option>02</option>
-          <option>03</option>
-          <option>04</option>
-          <option>05</option>
-          <option>06</option>
-          <option>07</option>
-          <option>08</option>
-          <option>09</option>
-          <option>10</option>
-          <option>11</option>
-          <option>12</option>
-        </select>
-        <select className={style.input} {...register('date')} defaultValue="2023">
-          <option>2023</option>
-          <option>2024</option>
-          <option>2025</option>
-          <option>2026</option>
-        </select>
-        </div>
+        </form>
+      </div>}
+    {form === 'bookingForm' &&
+      <div className={style.formbooking}>
+        <div className={style.title}> פרטי כרטיס אשראי</div>
+        <form onSubmit={handleSubmit(onSubmitBooking)}>
+          <input className={style.input}
+            placeholder=' מספר כרטיס...' {...register('creditNumber')}
+            type="text"
+          />
+          <div>
 
 
-      <input type='submit' />
+            <select className={style.input} {...register('dayDdate')} defaultValue="01">
+              <option>01</option>
+              <option>02</option>
+              <option>03</option>
+              <option>04</option>
+              <option>05</option>
+              <option>06</option>
+              <option>07</option>
+              <option>08</option>
+              <option>09</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+            <select className={style.input} {...register('yearDate')} defaultValue="2023">
+              <option>2023</option>
+              <option>2024</option>
+              <option>2025</option>
+              <option>2026</option>
+            </select>
+            <p>{errors.dayDdate?.message}</p>
 
-    </form>
-  </div>
+          </div>
+
+
+          <input type='submit' />
+
+        </form>
+      </div>
     }
     {form === 'success' && <div>
       הזמנתך התקבלה בהצלחה
