@@ -13,9 +13,6 @@ export default function Registration() {
     fullName: Yup.string().required('שם מלא הוא שדה חובה'),
     email: Yup.string().email('כתובת דוא"ל לא תקינה').required('דוא"ל הוא שדה חובה'),
     phone: Yup.string().matches(/^[0-9]+$/, 'מספר הטלפון יכול לכלול רק מספרים').required('מספר טלפון הוא שדה חובה'),
-    // creditNumber: Yup.number().min(1000000000, 'מספר אשראי יכול לכלול לפחות 10 ספרות').required('מספר אשראי לא תקין'),
-    // dayDdate: Yup.date().required(),
-    // yearDate: Yup.date().required()
   });
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
@@ -115,32 +112,34 @@ export default function Registration() {
 
   }
   return (<div className={style.registration}>
-    <div className={style.invation}>
-      <div className={style.date}>
-        <h3>{"מ-" + sday + " ב" + monthNames[smonth - 1] + " " + syear}</h3>
-        <h3>{"עד " + eday + " ב" + monthNames[emonth - 1] + " " + eyear} |</h3>
-        {numDays === 1 ? <h3>{numDays + " יום"}</h3> : <h3>{numDays + " ימים"}</h3>}
-      </div>
-      <div className={style.info}>
-        <div className={style.x}>
-
-          <div className={style.beds}>
-            <h4>{numBeds + " מיטות"}</h4>
-          </div>
-
-          <div className={style.pension}>
-            <h4>{pension && " חצי פנסיון"}</h4>
-          </div>
+    {form !== 'success' &&
+      <div className={style.invation}>
+        <div className={style.date}>
+          <h3>{"מ-" + sday + " ב" + monthNames[smonth - 1] + " " + syear}</h3>
+          <h3>{"עד " + eday + " ב" + monthNames[emonth - 1] + " " + eyear} |</h3>
+          {numDays === 1 ? <h3>{numDays + " יום"}</h3> : <h3>{numDays + " ימים"}</h3>}
         </div>
 
+        <div className={style.info}>
+          <div className={style.x}>
 
-      </div>
-      <div className={style.payment}>
-        <h2>לתשלום</h2>
-        <h2>{payment_amount}</h2>
-      </div>
-    </div>
+            <div className={style.beds}>
+              <h4>{numBeds + " מיטות"}</h4>
+            </div>
 
+            <div className={style.pension}>
+              <h4>{pension && " חצי פנסיון"}</h4>
+            </div>
+          </div>
+
+        </div>
+
+        <div className={style.payment}>
+          <h2>לתשלום</h2>
+          <h2>{payment_amount}</h2>
+        </div>
+      </div>
+    }
     {form === 'registerForm' &&
       <div className={style.form}>
         <div className={style.title}>הרשמה </div>
@@ -150,13 +149,13 @@ export default function Registration() {
             type="text"
           />
 
-          <p>{errors.fullName?.message}</p>
+          <p style={{ color: 'red' }}>{errors.fullName?.message}</p>
           <input
             className={style.input}
             placeholder='מספר טלפון...' {...register('phone')}
             type="text"
           />
-          <p>{errors.phone?.message}</p>
+          <p style={{ color: 'red' }}>{errors.phone?.message}</p>
 
           <input
             className={style.input}
@@ -164,7 +163,7 @@ export default function Registration() {
             type="text"
 
           />
-          <p>{errors.email?.message}</p>
+          <p style={{ color: 'red' }}>{errors.email?.message}</p>
 
           <input type='submit' />
 
@@ -175,8 +174,10 @@ export default function Registration() {
         <div className={style.title}> פרטי כרטיס אשראי</div>
         <form onSubmit={handleSubmit(onSubmitBooking)}>
           <input className={style.input}
-            placeholder=' מספר כרטיס...' {...register('creditNumber')}
-            type="text"
+            placeholder=' מספר כרטיס...'
+            {...register('creditNumber')}
+            type="number"
+            required={'required'}
           />
           <div>
 
@@ -211,8 +212,10 @@ export default function Registration() {
         </form>
       </div>
     }
-    {form === 'success' && <div>
-      הזמנתך התקבלה בהצלחה
+    {form === 'success' && <div className={style.success}>
+      <h1>
+        הזמנתך התקבלה בהצלחה
+      </h1>
       <div className={style.print} onClick={print}>הדפס פרטי הזמנה</div>
     </div>}
   </div>

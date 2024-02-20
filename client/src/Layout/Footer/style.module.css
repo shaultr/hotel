@@ -4,9 +4,8 @@
   background-color: #A7AFA6;
   color:#cb9e00 ;
   margin-top: 25px;
-  box-shadow:inset 0px 0px 10px 10px #5c020060;
-  font-size: 50px;
+  box-shadow:inset 0px 0px 3px 3px #5c020060;
+  font-size: 20px;
   font-weight: 900;
-  text-shadow: 00px 0px 10px black;
   border: 2px solid #CEA000;
 }
