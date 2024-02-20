@@ -9,14 +9,13 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 
 export default function Registration() {
-
   const schema = Yup.object().shape({
     fullName: Yup.string().required('שם מלא הוא שדה חובה'),
     email: Yup.string().email('כתובת דוא"ל לא תקינה').required('דוא"ל הוא שדה חובה'),
     phone: Yup.string().matches(/^[0-9]+$/, 'מספר הטלפון יכול לכלול רק מספרים').required('מספר טלפון הוא שדה חובה'),
-    creditNumber: Yup.number().min(1000000000, 'מספר אשראי יכול לכלול לפחות 10 ספרות').required('מספר אשראי לא תקין'),
-    dayDdate: Yup.date().required(),
-    yearDate: Yup.date().required()
+    // creditNumber: Yup.number().min(1000000000, 'מספר אשראי יכול לכלול לפחות 10 ספרות').required('מספר אשראי לא תקין'),
+    // dayDdate: Yup.date().required(),
+    // yearDate: Yup.date().required()
   });
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
@@ -43,7 +42,7 @@ export default function Registration() {
     console.log(data);
     try {
       const response = await axios.post(`http://localhost:8000/admin/newCustomer`, { fullName: data.fullName, phoneNumber: data.phoneNumber, email: data.email });
-      setCustomerId(response?.data?.customer_id)
+      response.data.customer_id && setCustomerId(response.data.customer_id);
       console.log("response:", response.data);
     } catch (error) {
       console.error('Error occurred during authentication:', error);
@@ -52,7 +51,7 @@ export default function Registration() {
 
   const newBooking = async () => {
     try {
-      const response = await axios.post(`http://localhost:8000/admin/newBooking`, {customer_id: customerId, room_id: room_id, payment_amount: payment_amount, startDate: startDate, endDate: endDate });
+      const response = await axios.post(`http://localhost:8000/admin/newBooking`, { customer_id: customerId, room_id: room_id, payment_amount: payment_amount, startDate: startDate, endDate: endDate });
       console.log("response:", response.data);
     } catch (error) {
       console.error('Error occurred during authentication:', error);
@@ -66,7 +65,7 @@ export default function Registration() {
     setCustomerName(data.fullName);
     setForm('bookingForm');
   };
-  
+
   const onSubmitBooking = (data) => {
     console.log(data);
     newBooking()
@@ -112,7 +111,7 @@ export default function Registration() {
     doc.text(payment_amount, 10, 100);
 
     doc.save('your_booking.pdf');
-    setForm(false);
+    setForm('registerForm');
 
   }
   return (<div className={style.registration}>
@@ -151,11 +150,13 @@ export default function Registration() {
             type="text"
           />
 
+          <p>{errors.fullName?.message}</p>
           <input
             className={style.input}
             placeholder='מספר טלפון...' {...register('phone')}
             type="text"
           />
+          <p>{errors.phone?.message}</p>
 
           <input
             className={style.input}
@@ -164,8 +165,6 @@ export default function Registration() {
 
           />
           <p>{errors.email?.message}</p>
-          <p>{errors.phone?.message}</p>
-          <p>{errors.fullName?.message}</p>
 
           <input type='submit' />
 
@@ -207,7 +206,7 @@ export default function Registration() {
           </div>
 
 
-          <input type='submit' />
+          <input type='submit' value={'אישור הזמנה'} />
 
         </form>
       </div>
