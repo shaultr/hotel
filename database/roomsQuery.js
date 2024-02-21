@@ -3,7 +3,6 @@ const pool = require('./main');
 
 //get all rooms available by room   
 async function getRoomAvailable(startDate, endDate, roomId) {
-    console.log(startDate, endDate, roomId);
     const SQL = `
     SELECT *
     FROM rooms
@@ -17,7 +16,6 @@ async function getRoomAvailable(startDate, endDate, roomId) {
       );
   `;
     const [data] = await pool.query(SQL);
-    console.log(data);
     return data[0];
 };
 
@@ -37,7 +35,6 @@ async function getRoomsAvailables(startDate, endDate, numBeds) {
       );
   `;
     const [data] = await pool.query(SQL);
-    console.log(data); 
     return data;
 }
 
