@@ -38,24 +38,25 @@ function authenticateToken(req, res, next) {
     if (!authHeader) return res.sendStatus(401);
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401);
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, customer) => {
+    const deitels = jwt.verify(token, process.env.TOKEN_SECRET, (err, customer) => {
         if (err) return res.sendStatus(403);
-        req.customer = customer;
+        req.body.customer = customer;
         next()
     })
 }
 adminRoute.post("/newCustomer", async (req, res) => {
-
     try {
         const { fullName, phoneNumber, email } = req.body;
         const tokenData = { fullName, phoneNumber, email };
         const token = jwt.sign(tokenData, TOKEN_SECRET, { expiresIn: '10m' });
         const newCust = await functions.newCustomer(fullName, phoneNumber, email);
-        res.json({ newCust, token });
+        res.send({ newCust, token });
+        // console.log({ newCust, token });
     } catch (error) {
         console.error("Error occurred:", error);
         res.status(500).send();
-    }});
+    }
+});
 
 
 adminRoute.post("/newBooking", async (req, res) => {
