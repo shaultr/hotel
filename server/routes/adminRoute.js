@@ -6,20 +6,21 @@ const TOKEN_SECRET = process.env.TOKEN_SECRET
 const adminRoute = express.Router();
 
 
-adminRoute.get('/authentication/:name/:email', async (req, res) => {
+adminRoute.get('/loginAdmin/:name/:email', async (req, res) => {
+    const { email } = req.params;
     try {
-        const [customer] = await functions.isAdmin(req.params.name, req.params.email);
+        const token = jwt.sign({ email }, TOKEN_SECRET, { expiresIn: '1h' });
+        const [customer] = await functions.isAdmin(req.params.name, email);
         if (customer?.is_admin === 1) {
-            res.json(customer);
+            res.json({ customer, token });
+        } else {
+            res.sendStatus(401);
         }
-        else {
-            res.status(401).send("Invalid")
-        }
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err);
     }
-})
+});
+
 
 
 
@@ -34,37 +35,51 @@ adminRoute.get("/getCustomer/:cust", async (req, res) => {
 });
 
 function authenticateToken(req, res, next) {
-    const authHeader = req.headers['Authorization']
-    if (!authHeader) return res.sendStatus(401);
-    const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) return res.sendStatus(401);
-    const deitels = jwt.verify(token, process.env.TOKEN_SECRET, (err, customer) => {
-        if (err) return res.sendStatus(403);
-        req.body.customer = customer;
-        next()
-    })
+    const authorizationHeader = req.headers.authorization;
+    console.log(req.headers.authorization);
+    if (!authorizationHeader) {
+        // console.error('Authorization header missing');
+        return res.status(401).send('authorization header missing');
+    }
+
+    const token = authorizationHeader.split('Bearer ')[1];
+
+    if (!token) {
+        console.error('Bearer token missing in Authorization header');
+        return res.status(401).send('Bearer token missing in Authorization header');
+    }
+
+    try {
+        const details = jwt.verify(token, process.env.TOKEN_SECRET);
+        next();
+    } catch (error) {
+        console.error('Invalid token:', error);
+        res.status(401).send('Invalid token');
+    }
 }
+
+
 adminRoute.post("/newCustomer", async (req, res) => {
     try {
         const { fullName, phoneNumber, email } = req.body;
         const tokenData = { fullName, phoneNumber, email };
-        const token = jwt.sign(tokenData, TOKEN_SECRET, { expiresIn: '10m' });
+        const token = jwt.sign(tokenData, TOKEN_SECRET, { expiresIn: '1h' });
         const newCust = await functions.newCustomer(fullName, phoneNumber, email);
         res.send({ newCust, token });
-        // console.log({ newCust, token });
     } catch (error) {
         console.error("Error occurred:", error);
         res.status(500).send();
     }
 });
 
-
-adminRoute.post("/newBooking", async (req, res) => {
+// authenticateToken 
+adminRoute.post("/newBooking", authenticateToken, async (req, res) => {
     try {
         const { customer_id, room_id, payment_amount, startDate, endDate } = req.body;
         const newBooki = await functions.newBooking(customer_id, room_id, startDate, endDate, payment_amount, 1);
         res.json(newBooki);
     } catch (error) {
+        console.log("rrr");
         res.status(500).send();
     }
 });
@@ -136,7 +151,7 @@ adminRoute.get("/getPendingBookings", async (req, res) => {
 }
 );
 
-adminRoute.delete('/:bookingId', async (req, res) => {
+adminRoute.delete('/:bookingId',authenticateToken, async (req, res) => {
     try {
         const data = await functions.deleteBooking(req.params.bookingId);
         if (data) {

@@ -22,9 +22,8 @@ export default function Registration() {
 
 
 
-
   const [customerName, setCustomerName] = useState('');
-  const [form, setForm] = useState('registerForm');  
+  const [form, setForm] = useState('registerForm');
   const [customerId, setCustomerId] = useState(0);
 
   const queryParams = queryString.parse(location.search);
@@ -36,53 +35,55 @@ export default function Registration() {
   const pension = queryParams.pension;
 
   const newCustomer = async (data) => {
-    console.log(data);
     try {
       const response = await axios.post(`http://localhost:8000/admin/newCustomer`, {
         fullName: data.fullName,
         phoneNumber: data.phone,
         email: data.email
       });
-      console.log('res?' + response.data.newCust);
 
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
-        
+
       }
-      response.data.customer_id && setCustomerId(response.data.customer_id);
-      // console.log("response:", response.data);
-          setForm('bookingForm');
+      const newCustomerId = JSON.stringify(response.data.newCust.customer_id)
+      setCustomerId(newCustomerId);
+      setForm('bookingForm');
 
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
   };
+
   const newBooking = async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
         return;
       }
-      const response = await axios.post(`http://localhost:8000/admin/newBooking`, {
-        customer_id: customerId,
-        room_id: room_id,
-        payment_amount: payment_amount,
-        startDate: startDate,
-        endDate: endDate
-      }
-      ,{
-        headers: {
-          'Authorization': `Bearer ${token}`
+      const response = await axios.post(
+        'http://localhost:8000/admin/newBooking',
+        {
+          customer_id: customerId,
+          room_id: room_id,
+          payment_amount: payment_amount,
+          startDate: startDate,
+          endDate: endDate
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`
+          }
         }
-      }
       );
-      console.log("response:", response);
+      localStorage.removeItem('token');
       setForm('success');
-
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
   };
+
+
 
 
   const onSubmitCustomer = (data) => {
@@ -91,7 +92,6 @@ export default function Registration() {
   };
 
   const onSubmitBooking = (data) => {
-    console.log(data);
     newBooking()
   }
 

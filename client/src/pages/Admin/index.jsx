@@ -15,47 +15,56 @@ export default function Admin() {
 
     const [bookings, setBookings] = useState([]);
     const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') === 'true');
-    
+
     const getAllBookings = async () => {
-            try {
-                const { data } = await axios.get('http://localhost:8000/admin/getAllBookings');
-                setBookings(data);
-                console.log(data);
-            } catch (err) {
-                console.error('Error fetching bookings:', err);
-            }
+        try {
+            const { data } = await axios.get('http://localhost:8000/admin/getAllBookings');
+            setBookings(data);
+            console.log(data);
+        } catch (err) {
+            console.error('Error fetching bookings:', err);
+        }
     };
 
     const getActiveBookings = async () => {
-            try {
-                const { data } = await axios.get('http://localhost:8000/admin/getActiveBookings');
-                setBookings(data);
-                console.log(data);
-            } catch (err) {
-                console.error('Error fetching bookings:', err);
-            }
+        try {
+            const { data } = await axios.get('http://localhost:8000/admin/getActiveBookings');
+            setBookings(data);
+            console.log(data);
+        } catch (err) {
+            console.error('Error fetching bookings:', err);
+        }
     };
     const getFinishedBookings = async () => {
-            try {
-                const { data } = await axios.get('http://localhost:8000/admin/getFinishedBookings');
-                setBookings(data);
-                console.log(data);
-            } catch (err) {
-                console.error('Error fetching bookings:', err);
-            }
+        try {
+            const { data } = await axios.get('http://localhost:8000/admin/getFinishedBookings');
+            setBookings(data);
+            console.log(data);
+        } catch (err) {
+            console.error('Error fetching bookings:', err);
+        }
     };
     const getPendingBookings = async () => {
-            try {
-                const { data } = await axios.get('http://localhost:8000/admin/getPendingBookings');
-                setBookings(data);
-                console.log(data);
-            } catch (err) {
-                console.error('Error fetching bookings:', err);
-            }
+        try {
+            const { data } = await axios.get('http://localhost:8000/admin/getPendingBookings');
+            setBookings(data);
+            console.log(data);
+        } catch (err) {
+            console.error('Error fetching bookings:', err);
+        }
     };
     const deleteBooking = async (bookingId) => {
         try {
-            const response = await axios.delete(`http://localhost:8000/admin/${bookingId}`)
+            const token = localStorage.getItem('token');
+            if (!token) {
+                return;
+            }
+            const response = await axios.delete(`http://localhost:8000/admin/${bookingId}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            });
+
             const newArr = bookings.filter(booking => booking.booking_id !== bookingId);
             setBookings(newArr);
         }
@@ -63,48 +72,42 @@ export default function Admin() {
         }
     }
 
-    // useEffect(() => {
-    //     showAllBookings();
-    // }, []);
 
-              const handleSelect = (event) => {
-    if (event.target.value === "all") {
-    getAllBookings();
+
+    const handleSelect = (event) => {
+        if (event.target.value === "all") {
+            getAllBookings();
+        }
+        else if (event.target.value === "active") {
+            getActiveBookings()
+        }
+        else if (event.target.value === "finished") {
+            getFinishedBookings()
+        }
+        else if (event.target.value === "pending") {
+            getPendingBookings()
+        }
     }
-    else if (event.target.value === "active") {
-        getActiveBookings()
-    }
-    else if (event.target.value === "finished") {
-        getFinishedBookings()
-    }
-    else if (event.target.value === "pending") {
-        getPendingBookings()
-    }
-}
 
 
     const login = async () => {
         try {
-            const  {data}  = await axios.get(`http://localhost:8000/admin/authentication/${name}/${email}`);
+            const response = await axios.get(`http://localhost:8000/admin/loginAdmin/${name}/${email}`);
+
+            if (response.data.token) {
+                localStorage.setItem('token', response.data.token);
+            }
             localStorage.setItem('isAdmin', true);
             setIsAdmin(true);
         }
         catch (err) {
             setIsAuthorized(false);
-            
+
         }
     };
- 
 
-    const showAllBookings = () => {
-        return bookings.map((booking) => (
-            <div key={booking.id}>
-                <div>id: {booking.booking_id}</div>
-                <div>start: {booking.start_date}</div>
-                {/* Add other properties you want to display */}
-            </div>
-        ));
-    };
+
+
 
     if (!isAdmin) {
         return (
@@ -118,22 +121,26 @@ export default function Admin() {
     }
 
 
-
+const logout = ()=>{
+    localStorage.removeItem('token');
+    localStorage.setItem('isAdmin', 'false');
+    window.location.reload();
+}
     return (
         <div>
 
-            <div className={styles.esc} onClick={() => { localStorage.setItem('isAdmin', 'false'); window.location.reload(); }}>Esc</div>
-             {/* onChange={handleSelect} */}
-             <select className={styles.select} onChange={handleSelect}>
-             <option >Select</option>
-             <option value="all">All Bookings</option>
-             <option value="active">Active Bookings</option>
-             <option value="finished">Finished Bookings</option>
-             <option value="pending">Pending Bookings</option>
-         </select>
+            <div className={styles.esc} onClick={logout}>Esc</div>
+            {/* onChange={handleSelect} */}
+            <select className={styles.select} onChange={handleSelect}>
+                <option >Select</option>
+                <option value="all">All Bookings</option>
+                <option value="active">Active Bookings</option>
+                <option value="finished">Finished Bookings</option>
+                <option value="pending">Pending Bookings</option>
+            </select>
             <div>
                 {bookings.length > 0 && (
-                    <Bookings bookings={bookings} deleteBooking={deleteBooking}/>
+                    <Bookings bookings={bookings} deleteBooking={deleteBooking} />
                 )}
             </div>
         </div>
