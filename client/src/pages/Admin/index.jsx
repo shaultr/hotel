@@ -93,6 +93,7 @@ export default function Admin() {
     const login = async () => {
         try {
             const response = await axios.get(`http://localhost:8000/admin/loginAdmin/${name}/${email}`);
+            console.log(response);
 
             if (response.data.token) {
                 localStorage.setItem('token', response.data.token);

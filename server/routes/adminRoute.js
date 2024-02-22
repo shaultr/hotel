@@ -10,14 +10,15 @@ adminRoute.get('/loginAdmin/:name/:email', async (req, res) => {
     const { email } = req.params;
     try {
         const token = jwt.sign({ email }, TOKEN_SECRET, { expiresIn: '1h' });
-        const [customer] = await functions.isAdmin(req.params.name, email);
+        const [customer] = await functions.isAdmin(req.params.name, req.params.email);
+        console.log(customer); 
         if (customer?.is_admin === 1) {
             res.json({ customer, token });
         } else {
             res.sendStatus(401);
         }
     } catch (err) {
-        console.log(err);
+        console.log(err); 
     }
 });
 

@@ -7,6 +7,7 @@ async function isAdmin(name, email) {
     console.log(data);
     return data;
 }
+isAdmin('a', 'ab')
 //get all bookings for administration
 async function getAllBookings() {
     const SQL = `SELECT * FROM bookings ORDER BY booking_id DESC`;
