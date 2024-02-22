@@ -17,21 +17,32 @@ img {
     height: auto;
     margin: 6px;
 }
+
 .backImage {
     position: absolute;
     top: 0;
     left: 0;
-    width: 110%;
+    width: 104%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.5); /* שקיפות קצת שקופה (50%) */
+    background-color: rgba(255, 255, 255, 0.5);
+    /* שקיפות קצת שקופה (50%) */
     display: none;
     color: #5c0100;
     align-items: center;
     justify-content: center;
     font-size: 2em;
     cursor: pointer;
-  }
-  
-  .image:hover .backImage {
+}
+
+.image:hover .backImage {
     display: flex;
-  }
+}
+
+.weather {
+    width: 20%;
+    height: 172px;
+    border: 1px solid black;
+    margin-top: 5px;
+
+}
+

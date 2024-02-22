@@ -1,0 +1,32 @@
+.weatherContainer {
+    background-color: #81ab97;
+    padding: 8px;
+    color: #334c16;
+    width: 100%;
+    height: 100%;
+
+}
+.temp{
+    display: flex;
+    justify-content:center;
+}
+.form {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input {
+    width: 160px;
+    height: 30px;
+}
+
+.send {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+    height: 30px;
+    font-size: 14px;
+
+}

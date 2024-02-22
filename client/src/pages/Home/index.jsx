@@ -1,6 +1,21 @@
 import style from './style.module.css';
 import Imprssives from '../../components/Impressives';
 import { useState, useEffect } from 'react';
+import Weather from './Weather'
+
+
+// .weather{
+//     top: 10px;
+//     position: absolute;
+//     /* border: 1px solid black; */
+//     left: 60px;
+//     width: 300px;
+
+
+// <div className={styles.weather}>
+// <Weather />
+// </div>
+
 
 export default function Home() {
     const images = ['./images/1a.jpg', './images/home1.jpg', './images/home2.jpg'];
@@ -30,7 +45,6 @@ export default function Home() {
                     <br />
                     <br />
                  <p className={style.infoRespon}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit nihil et cum laborum quis dolores, quia, pariatur ab minima eaque alias, adipisci ut aliquid repudiandae ipsam animi ullam suscipit veritatis!
                     </p>
                 </div>
 

@@ -1,5 +1,6 @@
 import styles from './style.module.css';
 import { useNavigate } from 'react-router-dom';
+import Weather from '../../pages/Home/Weather'
 
 export default function Impressives() {
 
@@ -29,6 +30,9 @@ export default function Impressives() {
         </div>
         <img src='/images/food.jpg' />
       </div>
+      <div className={styles.weather}>
+                        <Weather />
+                    </div>
 
     </div>
   )

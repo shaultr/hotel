@@ -1,9 +1,8 @@
 import styles from './style.module.css';
 import { useNavigate } from 'react-router-dom';
-import Weather from './Weather'
 export default function Menu() {
   const navigate = useNavigate();
-
+  
   return (
     <div className={styles.menu}>
       <h3>🌟🌟🌟🌟🌟</h3>
@@ -17,9 +16,7 @@ export default function Menu() {
 
 
       </div>
-        <div className={styles.weather}>
-        <Weather />
-        </div>
+
     </div>
   )
 }
