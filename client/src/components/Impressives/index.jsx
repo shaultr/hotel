@@ -9,7 +9,7 @@ export default function Impressives() {
     navigate('/gallery')
   }
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id='gallery'>
       <div className={styles.image}>
         <div className={styles.backImage} onClick={goGallery}>
           <h3>צפה בגלריה</h3>

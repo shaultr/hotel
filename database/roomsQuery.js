@@ -1,8 +1,8 @@
 const pool = require('./main');
 
 
-//get all rooms available by room   
-async function getRoomAvailable(startDate, endDate, roomId) {
+//get room available by room id   
+async function getRoomById(roomId, startDate, endDate) {
     const SQL = `
     SELECT *
     FROM rooms
@@ -17,8 +17,8 @@ async function getRoomAvailable(startDate, endDate, roomId) {
   `;
     const [data] = await pool.query(SQL);
     return data[0];
-};
-
+}; 
+getRoomById(1,'2024-03-01', '2024-03-02')
 //get all rooms available by date
 async function getRoomsAvailables(startDate, endDate, numBeds) {
     const SQL = `
@@ -37,10 +37,16 @@ async function getRoomsAvailables(startDate, endDate, numBeds) {
     const [data] = await pool.query(SQL);
     return data;
 }
-
-getRoomsAvailables('2024-02-01', '2024-02-02',2)
+//get all rooms
+async function getAllRooms() {
+    const SQL = `SELECT * FROM rooms`;
+    const [data] = await pool.query(SQL);
+    console.log(data);
+    return data;
+}
 
 module.exports = {
-    getRoomAvailable,
-    getRoomsAvailables,
+  getRoomById,
+  getRoomsAvailables,
+  getAllRooms
 }

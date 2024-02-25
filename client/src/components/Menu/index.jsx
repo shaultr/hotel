@@ -8,8 +8,8 @@ export default function Menu() {
       <h3>🌟🌟🌟🌟🌟</h3>
       <h1 style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>wellcome to the hotel</h1>
       <div>
-        <a href='#' className={styles.a}>  גלריה  </a>
-        <a href='#' className={styles.a}> | חדרי המלון  </a>
+        <a href='#gallery' className={styles.a}>  גלריה  </a>
+        <a href='#' onClick={() => navigate('/rooms')} className={styles.a}> | חדרי המלון  </a>
         <a href='#' className={styles.a}> | מבצעים  |</a>
         <a href='#' className={styles.a}>   צור קשר  </a>
 

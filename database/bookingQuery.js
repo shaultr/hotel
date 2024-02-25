@@ -4,7 +4,6 @@ const pool = require('./main');
 async function isAdmin(name, email) {
     const SQL = `SELECT * FROM customers WHERE full_name = ? AND email = ?`;
     const [data] = await pool.query(SQL,[name, email]);
-    console.log(data);
     return data;
 }
 isAdmin('a', 'ab')
@@ -43,7 +42,6 @@ async function getPendingBookings() {
     WHERE start_date > CURDATE()
     ORDER BY booking_id DESC`;
     const [data] = await pool.query(SQL);
-    console.log(data);
     return data;
 };
 
@@ -54,7 +52,6 @@ async function getBooking(bookingId) {
     FROM bookings
     WHERE booking_id = ?`;
     const [data] = await pool.query(SQL, [bookingId]);
-    console.log(data);
     return data;
 };
 
@@ -88,7 +85,6 @@ async function deleteBooking(bookingId) {
     const SQL = `DELETE FROM bookings
     WHERE booking_id = ?`;
     const [data] = await pool.query(SQL, [bookingId]);
-    console.log(result);
     return result
     };
 

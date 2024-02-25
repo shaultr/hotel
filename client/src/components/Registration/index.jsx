@@ -1,5 +1,5 @@
 import style from './style.module.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
@@ -21,10 +21,14 @@ export default function Registration() {
   const location = useLocation();
 
 
-
+  const [vailability, setAvailability] = useState(true);
   const [customerName, setCustomerName] = useState('');
   const [form, setForm] = useState('registerForm');
   const [customerId, setCustomerId] = useState(0);
+
+  // useEffect(()=>{
+  //   !!localStorage.getItem('token') && setForm('bookingForm');
+  // },[])
 
   const queryParams = queryString.parse(location.search);
   const room_id = queryParams.room_id;
@@ -54,6 +58,19 @@ export default function Registration() {
       console.error('Error occurred during authentication:', error);
     }
   };
+  let test;
+  const testAvailability  = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/rooms/getRoomById/
+      ${room_id}/${startDate}/${endDate}}`
+      )
+      test = response;
+    }
+    catch (error) {
+
+    }
+  };
 
   const newBooking = async () => {
     try {
@@ -61,23 +78,29 @@ export default function Registration() {
       if (!token) {
         return;
       }
-      const response = await axios.post(
-        'http://localhost:8000/admin/newBooking',
-        {
-          customer_id: customerId,
-          room_id: room_id,
-          payment_amount: payment_amount,
-          startDate: startDate,
-          endDate: endDate
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`
+      testAvailability();
+      if (test) {
+        const response = await axios.post(
+          'http://localhost:8000/admin/newBooking',
+          {
+            customer_id: customerId,
+            room_id: room_id,
+            payment_amount: payment_amount,
+            startDate: startDate,
+            endDate: endDate
+          },
+          {
+            headers: {
+              authorization: `Bearer ${token}`
+            }
           }
-        }
-      );
-      localStorage.removeItem('token');
-      setForm('success');
+        );
+        localStorage.removeItem('token');
+        setForm('success');
+      }
+      else {
+        setAvailability(false)
+      }
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
@@ -166,7 +189,7 @@ export default function Registration() {
         </div>
       </div>
     }
-    {form === 'registerForm' &&
+    {form === 'registerForm'  &&
       <div className={style.form}>
         <div className={style.title}>הרשמה </div>
         <form onSubmit={handleSubmit(onSubmitCustomer)}>
@@ -234,7 +257,7 @@ export default function Registration() {
 
 
           <input type='submit' value={'אישור הזמנה'} />
-
+          {!vailability && <div style={{color: 'red'}}>החדר המבוקש לא זמין. יש לבחור תאריך אחר </div>}
         </form>
       </div>
     }

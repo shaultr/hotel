@@ -11,7 +11,6 @@ adminRoute.get('/loginAdmin/:name/:email', async (req, res) => {
     try {
         const token = jwt.sign({ email }, TOKEN_SECRET, { expiresIn: '1h' });
         const [customer] = await functions.isAdmin(req.params.name, req.params.email);
-        console.log(customer); 
         if (customer?.is_admin === 1) {
             res.json({ customer, token });
         } else {
@@ -37,7 +36,6 @@ adminRoute.get("/getCustomer/:cust", async (req, res) => {
 
 function authenticateToken(req, res, next) {
     const authorizationHeader = req.headers.authorization;
-    console.log(req.headers.authorization);
     if (!authorizationHeader) {
         // console.error('Authorization header missing');
         return res.status(401).send('authorization header missing');
