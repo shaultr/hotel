@@ -72,7 +72,7 @@ adminRoute.post("/newCustomer", async (req, res) => {
 });
 
 // authenticateToken 
-adminRoute.post("/newBooking", authenticateToken, async (req, res) => {
+adminRoute.post("/newBooking", async (req, res) => {
     try {
         const { customer_id, room_id, payment_amount, startDate, endDate } = req.body;
         const newBooki = await functions.newBooking(customer_id, room_id, startDate, endDate, payment_amount, 1);

@@ -21,7 +21,7 @@ export default function Registration() {
   const location = useLocation();
 
 
-  const [vailability, setAvailability] = useState(true);
+  const [availability, setAvailability] = useState(true);
   const [customerName, setCustomerName] = useState('');
   const [form, setForm] = useState('registerForm');
   const [customerId, setCustomerId] = useState(0);
@@ -58,17 +58,17 @@ export default function Registration() {
       console.error('Error occurred during authentication:', error);
     }
   };
-  let test;
+
   const testAvailability = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/rooms/getRoomById/
-      ${room_id}/${startDate}/${endDate}}`
-      )
-      test = response;
-    }
+        `http://localhost:8000/rooms/getRoomById/${room_id}/${startDate}/${endDate}}`)
+        newBooking()
+        console.log('success');
+      }
     catch (error) {
-
+      console.log('Error occurred during');
+      setAvailability(false)
     }
   };
 
@@ -78,29 +78,24 @@ export default function Registration() {
       if (!token) {
         return;
       }
-      testAvailability();
-      if (test) {
-        const response = await axios.post(
-          'http://localhost:8000/admin/newBooking',
-          {
-            customer_id: customerId,
-            room_id: room_id,
-            payment_amount: payment_amount,
-            startDate: startDate,
-            endDate: endDate
-          },
-          {
-            headers: {
-              authorization: `Bearer ${token}`
-            }
+      const response = await axios.post(
+        'http://localhost:8000/admin/newBooking',
+        {
+          customer_id: customerId,
+          room_id: room_id,
+          payment_amount: payment_amount,
+          startDate: startDate,
+          endDate: endDate
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`
           }
-        );
-        localStorage.removeItem('token');
-        setForm('success');
-      }
-      else {
-        setAvailability(false)
-      }
+        }
+      );
+      localStorage.removeItem('token');
+      setForm('success');
+
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
@@ -114,8 +109,8 @@ export default function Registration() {
     setCustomerName(data.fullName);
   };
 
-  const onSubmitBooking = (data) => {
-    newBooking()
+  const onSubmitBooking = () => {
+    testAvailability()
   }
 
   function calculateDateDifference() {
@@ -257,7 +252,7 @@ export default function Registration() {
 
 
           <input type='submit' value={'אישור הזמנה'} />
-          {!vailability && <div style={{ color: 'red' }}>החדר המבוקש לא זמין. יש לבחור תאריך אחר </div>}
+          {!availability && <div style={{ color: 'red' }}>החדר המבוקש לא זמין. יש לבחור תאריך אחר </div>}
         </form>
       </div>
     }
@@ -267,9 +262,9 @@ export default function Registration() {
         <h1>
           הזמנתך התקבלה בהצלחה
         </h1>
-
-        <div className={style.print} onClick={print}>הדפס פרטי הזמנה</div>
-      </div>}
-    </div>
+      </>
+      <div className={style.print} onClick={print}>הדפס פרטי הזמנה</div>
+    </div>}
+  </div>
   );
 }
