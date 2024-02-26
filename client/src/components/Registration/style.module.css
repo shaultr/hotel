@@ -104,10 +104,23 @@ button {
 
 }
 
+.circle{
+    background-color: #4856968a;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .print {
     width: 140px;
     height: 30px;
     padding: 10px;
+    cursor: pointer;
     background-color: #485696;
     color: white;
     /* font-size: 18px; */

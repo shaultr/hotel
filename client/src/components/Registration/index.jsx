@@ -59,7 +59,7 @@ export default function Registration() {
     }
   };
   let test;
-  const testAvailability  = async () => {
+  const testAvailability = async () => {
     try {
       const response = await axios.get(
         `http://localhost:8000/rooms/getRoomById/
@@ -189,7 +189,7 @@ export default function Registration() {
         </div>
       </div>
     }
-    {form === 'registerForm'  &&
+    {form === 'registerForm' &&
       <div className={style.form}>
         <div className={style.title}>הרשמה </div>
         <form onSubmit={handleSubmit(onSubmitCustomer)}>
@@ -257,16 +257,19 @@ export default function Registration() {
 
 
           <input type='submit' value={'אישור הזמנה'} />
-          {!vailability && <div style={{color: 'red'}}>החדר המבוקש לא זמין. יש לבחור תאריך אחר </div>}
+          {!vailability && <div style={{ color: 'red' }}>החדר המבוקש לא זמין. יש לבחור תאריך אחר </div>}
         </form>
       </div>
     }
     {form === 'success' && <div className={style.success}>
-      <h1>
-        הזמנתך התקבלה בהצלחה
-      </h1>
-      <div className={style.print} onClick={print}>הדפס פרטי הזמנה</div>
-    </div>}
-  </div>
+      <>
+        <div className={style.circle}>✔️</div>
+        <h1>
+          הזמנתך התקבלה בהצלחה
+        </h1>
+
+        <div className={style.print} onClick={print}>הדפס פרטי הזמנה</div>
+      </div>}
+    </div>
   );
 }
