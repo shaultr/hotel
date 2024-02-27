@@ -12,6 +12,7 @@ export default function Admin() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [isAuthorized, setIsAuthorized] = useState(true);
+    const [type, setType] = useState('');
 
     const [bookings, setBookings] = useState([]);
     const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') === 'true');
@@ -77,15 +78,19 @@ export default function Admin() {
     const handleSelect = (event) => {
         if (event.target.value === "all") {
             getAllBookings();
+            setType('all')
         }
         else if (event.target.value === "active") {
             getActiveBookings()
         }
         else if (event.target.value === "finished") {
             getFinishedBookings()
+            setType('finished')
+
         }
         else if (event.target.value === "pending") {
             getPendingBookings()
+            setType('pending')
         }
     }
 
@@ -141,7 +146,10 @@ const logout = ()=>{
             </select>
             <div>
                 {bookings.length > 0 && (
+                    <>
                     <Bookings bookings={bookings} deleteBooking={deleteBooking} />
+                    { 'The number of ' + type + ' bookings is: ' + bookings.length}
+                    </>
                 )}
             </div>
         </div>

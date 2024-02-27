@@ -1,7 +1,7 @@
 import style from './style.module.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 import jsPDF from 'jspdf';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,8 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 
 export default function Registration() {
+  const navigate = useNavigate();
+
   const schema = Yup.object().shape({
     fullName: Yup.string().required('שם מלא הוא שדה חובה'),
     email: Yup.string().email('כתובת דוא"ל לא תקינה').required('דוא"ל הוא שדה חובה'),
@@ -63,9 +65,9 @@ export default function Registration() {
     try {
       const response = await axios.get(
         `http://localhost:8000/rooms/getRoomById/${room_id}/${startDate}/${endDate}}`)
-        newBooking()
-        console.log('success');
-      }
+      newBooking()
+      console.log('success');
+    }
     catch (error) {
       console.log('Error occurred during');
       setAvailability(false)
@@ -152,8 +154,7 @@ export default function Registration() {
     doc.text(payment_amount, 10, 100);
 
     doc.save('your_booking.pdf');
-    setForm('registerForm');
-
+    navigate('/')
   }
   return (<div className={style.registration}>
     {form !== 'success' &&

@@ -96,6 +96,13 @@ export default function Rooms() {
 
       <div className={styles.rooms}>
         {showRooms()}
+        {rooms<1 && <h2 style={{color: 'red'}}>אין חדרים זמינים. נא לבחור תאריך אחר</h2>}
+
+
+
+
+
+
       </div>
 
 
