@@ -1,9 +1,6 @@
 ﻿# hotel
 by emanuel tiran [https://github.com/EmanuelTiran](url) and shaul treitel.
 
-Note: We did a lot of hard work on this project,
-Therefore all rights are reserved,
-Do not copy or reproduce without the consent of the owner.
 
 in order to run this project you need make 
 1 - "import" to the "hotelSchema" to your "mysqlin" from  "databace" folder.
