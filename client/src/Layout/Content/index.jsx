@@ -5,6 +5,7 @@ import Gallery from '../../pages/Gallery';
 import Home from '../../pages/Home';
 
 import { Route, Routes } from 'react-router-dom';
+import MyBookings from '../../pages/MyBookings';
 
 export default function Content() {
 
@@ -17,6 +18,7 @@ export default function Content() {
                 <Route path='/rooms' element={<Rooms />} />
                 <Route path='/registration' element={<Registration />} />
                 <Route path='/gallery' element={<Gallery />} />
+                <Route path='/myBookings' element={<MyBookings />} />
             </Routes>
             <div className={styles.InvationContainer}>
             </div>

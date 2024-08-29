@@ -10,7 +10,7 @@ export default function Menu() {
       <div>
         <a href='#gallery' className={styles.a}>  גלריה  </a>
         <a href='#' onClick={() => navigate('/rooms')} className={styles.a}> | חדרי המלון  </a>
-        <a href='#' className={styles.a}> | מבצעים  |</a>
+        <a href='#' className={styles.a} onClick={() => navigate('/myBookings')}> | ההזמנות שלי  |</a>
         <a href='#' className={styles.a}>   צור קשר  </a>
 
 

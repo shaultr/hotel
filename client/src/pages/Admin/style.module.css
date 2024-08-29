@@ -39,11 +39,12 @@
     cursor: pointer;
     font-size: 19px;
   }
-  .esc{
+  .logout{
     position: absolute;
     left: 10px;
     background-color: #cea000;
-    padding: 6px;
+    padding: 15px;
+    
     color: white;
     cursor: pointer;
     border-radius: 3px;

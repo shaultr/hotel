@@ -135,7 +135,7 @@ const logout = ()=>{
     return (
         <div>
 
-            <div className={styles.esc} onClick={logout}>Esc</div>
+            <div className={styles.logout} onClick={logout}>Logout</div>
             {/* onChange={handleSelect} */}
             <select className={styles.select} onChange={handleSelect}>
                 <option >Select</option>

@@ -6,7 +6,6 @@ async function isAdmin(name, email) {
     const [data] = await pool.query(SQL,[name, email]);
     return data;
 }
-isAdmin('a', 'ab')
 //get all bookings for administration
 async function getAllBookings() {
     const SQL = `SELECT * FROM bookings ORDER BY booking_id DESC`;
@@ -55,6 +54,14 @@ async function getBooking(bookingId) {
     return data;
 };
 
+//get bookings all by user id
+async function getBookingByCustomer(customerId) {
+    const SQL = `SELECT *
+    FROM bookings
+    WHERE customer_id = ?`;
+    const [data] = await pool.query(SQL, [customerId]);  
+    return data;
+};
 
 // new booking 
 async function newBooking(customer_id, room_id, start_date, end_date, payment_amount, booking_status) {
@@ -98,5 +105,6 @@ module.exports = {
     getCustomer,
     getBooking,
     newCustomer,
-    deleteBooking
+    deleteBooking,
+    getBookingByCustomer
 }

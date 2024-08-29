@@ -49,7 +49,7 @@ function authenticateToken(req, res, next) {
     }
 
     try {
-        const details = jwt.verify(token, process.env.TOKEN_SECRET);
+        const user = jwt.verify(token, process.env.TOKEN_SECRET);
         next();
     } catch (error) {
         console.error('Invalid token:', error);
