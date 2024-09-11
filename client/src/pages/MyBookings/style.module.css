@@ -1,0 +1,137 @@
+/*  */
+
+.login {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    height: 100vh;
+    margin: 0 auto;
+    flex-direction: column;
+    justify-content: start;
+    /* align-items: center; */
+    gap: 6px;
+
+}
+
+.input {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.go {
+    width: 50%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    background-color: #cea000;
+    align-items: center;
+    margin: 0 auto;
+    color: white;
+}
+
+
+.logout {
+    position: absolute;
+    left: 10px;
+    background-color: #cea000;
+    padding: 15px;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.myBookings {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th {
+        border: 1px solid black;
+        padding: 8px;
+    }
+
+    tr {
+        border: 1px solid black;
+        padding: 8px;
+    }
+
+    td {
+        border: 1px solid black;
+    }
+}
+
+.tables {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.deleteTable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    
+    .del {
+        /* width: 50%;
+        height: 100%; */
+        padding: 6px;
+        border-radius: 6px;
+        color: white;
+        font-size: 20px;
+        background-color: #cea000;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.sure{
+    background-color: #cea000;
+    width: 30%;
+    height: 44px;
+    position: absolute;
+    margin-left: 100px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); /* צל */
+}
+
+.sureDel{
+    background-color: rgb(165, 73, 73);
+    padding: 6px;
+    border-radius: 10px;
+}
+.notification {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    text-align: center;
+    /* display: none; */
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    animation: fadeInOut 3s ease-out; /* הפעלת האנימציה */
+
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}

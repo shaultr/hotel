@@ -7,6 +7,7 @@ import jsPDF from 'jspdf';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
+import e from 'cors';
 
 export default function Registration() {
   const navigate = useNavigate();
@@ -15,9 +16,17 @@ export default function Registration() {
     fullName: Yup.string().required('שם מלא הוא שדה חובה'),
     email: Yup.string().email('כתובת דוא"ל לא תקינה').required('דוא"ל הוא שדה חובה'),
     phone: Yup.string().matches(/^[0-9]+$/, 'מספר הטלפון יכול לכלול רק מספרים').required('מספר טלפון הוא שדה חובה'),
+    password: Yup.string()
+      .min(6, 'הסיסמה חייבת להיות באורך של לפחות 6 תווים')
+      .required('סיסמה היא שדה חובה'),
   });
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(schema)
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      creditNumber: '',
+      dayDate: '01',
+      yearDate: '2023'
+    }
   });
 
   const location = useLocation();
@@ -25,12 +34,49 @@ export default function Registration() {
 
   const [availability, setAvailability] = useState(true);
   const [customerName, setCustomerName] = useState('');
+  const [customer, setCustomer] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [form, setForm] = useState('registerForm');
   const [customerId, setCustomerId] = useState(0);
 
-  // useEffect(()=>{
-  //   !!localStorage.getItem('token') && setForm('bookingForm');
-  // },[])
+  const getCustomerByToken = async () => {
+    if (!localStorage.token) {
+      setIsLoggedIn(false);
+      return
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.get(`http://localhost:8000/customer/`, {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      });
+      if(res.data){
+        const cust = res.data;
+        setCustomer(cust)
+        setIsLoggedIn(true);
+        setForm('bookingForm')
+        setCustomerName(cust.full_name);
+        setCustomerId(cust?.customer_id)
+      }
+    }
+    catch (error) {
+      console.log('error: ', error);
+    }
+  }
+  useEffect(() => {
+    getCustomerByToken();
+  }, [])
+
+  useEffect(() => {
+    if (form === 'bookingForm' && customer) {
+      reset({
+        creditNumber: '',  // אפשר לשים ערך כברירת מחדל אם יש נתונים שמורים
+        dayDate: '01',
+        yearDate: '2023'
+      });
+    }
+  }, [form, customer, reset]);
 
   const queryParams = queryString.parse(location.search);
   const room_id = queryParams.room_id;
@@ -41,19 +87,29 @@ export default function Registration() {
   const pension = queryParams.pension;
 
   const newCustomer = async (data) => {
+    const customer_email = data.email;
+    const customer = await axios.get(`http://localhost:8000/customer/getCustomer/${customer_email}`);
     try {
-      const response = await axios.post(`http://localhost:8000/admin/newCustomer`, {
+      if (customer.data) {
+        const id = customer.data.customer?.customer_id;
+        setCustomerId(id);
+        const token = customer.data.token;
+        localStorage.setItem('token', token);
+        setForm('bookingForm');
+        return;
+      }
+
+      const response = await axios.post(`http://localhost:8000/customer/newCustomer`, {
         fullName: data.fullName,
         phoneNumber: data.phone,
-        email: data.email
+        email: data.email,
+        password: data.password
       });
 
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-
-      }
       const newCustomerId = JSON.stringify(response.data.newCust.customer_id)
       setCustomerId(newCustomerId);
+      const token = response.data.token;
+      localStorage.setItem('token', token);
       setForm('bookingForm');
 
     } catch (error) {
@@ -62,11 +118,15 @@ export default function Registration() {
   };
 
   const testAvailability = async () => {
+    console.log('ff');
     try {
       const response = await axios.get(
         `http://localhost:8000/rooms/getRoomById/${room_id}/${startDate}/${endDate}}`)
-      newBooking()
-      console.log('success');
+      if (response.data) {
+        newBooking()
+        console.log('success', response.data);
+      }
+
     }
     catch (error) {
       console.log('Error occurred during');
@@ -75,11 +135,10 @@ export default function Registration() {
   };
 
   const newBooking = async () => {
+    console.log('customerrr');
+
     try {
       const token = localStorage.getItem('token');
-      if (!token) {
-        return;
-      }
       const response = await axios.post(
         'http://localhost:8000/admin/newBooking',
         {
@@ -95,7 +154,6 @@ export default function Registration() {
           }
         }
       );
-      localStorage.removeItem('token');
       setForm('success');
 
     } catch (error) {
@@ -104,14 +162,15 @@ export default function Registration() {
   };
 
 
-
-
   const onSubmitCustomer = (data) => {
     newCustomer(data);
     setCustomerName(data.fullName);
   };
 
-  const onSubmitBooking = () => {
+  const onSubmitBooking = (e) => {
+    e.preventDefault()
+    console.log('www');
+    
     testAvailability()
   }
 
@@ -130,13 +189,13 @@ export default function Registration() {
   ];
 
 
-  const arrStartData = startDate.split('-');
+  const arrStartData = startDate?.split('-');
   let sday = parseInt(arrStartData[2], 10);
   let smonth = parseInt(arrStartData[1], 10)
   let syear = parseInt(arrStartData[0], 10)
 
 
-  let arrEndData = endDate.split('-');
+  let arrEndData = endDate?.split('-');
   let eday = parseInt(arrEndData[2], 10);
   let emonth = parseInt(arrEndData[1], 10);
   let eyear = parseInt(arrEndData[0], 10)
@@ -208,7 +267,12 @@ export default function Registration() {
             type="text"
 
           />
-          <p style={{ color: 'red' }}>{errors.email?.message}</p>
+          <input
+            className={style.input}
+            placeholder=' סיסמא...'{...register('password')}
+            type="password"
+          />
+          <p style={{ color: 'red' }}>{errors.password?.message}</p>
 
           <input type='submit' />
 
@@ -216,18 +280,19 @@ export default function Registration() {
       </div>}
     {form === 'bookingForm' &&
       <div className={style.formbooking}>
+        <div className={style.title}> {customer && <h5>שלום {customer.full_name}</h5>}  </div>
         <div className={style.title}> פרטי כרטיס אשראי</div>
-        <form onSubmit={handleSubmit(onSubmitBooking)}>
+
+        <form onSubmit={onSubmitBooking}>
           <input className={style.input}
-            placeholder=' מספר כרטיס...'
-            {...register('creditNumber')}
-            type="number"
-            required={'required'}
+          placeholder=' מספר כרטיס...'
+          type="number"
+          required
           />
           <div>
 
 
-            <select className={style.input} {...register('dayDdate')} defaultValue="01">
+            <select className={style.input} {...register('dayDate')} defaultValue="01">
               <option>01</option>
               <option>02</option>
               <option>03</option>
@@ -247,10 +312,9 @@ export default function Registration() {
               <option>2025</option>
               <option>2026</option>
             </select>
-            <p>{errors.dayDdate?.message}</p>
+            <p>{errors.dayDate?.message}</p>
 
           </div>
-
 
           <input type='submit' value={'אישור הזמנה'} />
           {!availability && <div style={{ color: 'red' }}>החדר המבוקש לא זמין. יש לבחור תאריך אחר </div>}
@@ -264,6 +328,7 @@ export default function Registration() {
           הזמנתך התקבלה בהצלחה
         </h1>
       </>
+      <div className={style.print} onClick={() => navigate('/myBookings')}> צפיה בהזמנות שלך </div>
       <div className={style.print} onClick={print}>הדפס פרטי הזמנה</div>
     </div>}
   </div>

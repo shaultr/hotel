@@ -72,10 +72,10 @@ async function newBooking(customer_id, room_id, start_date, end_date, payment_am
     const TheNewBooking = await getBooking(data.insertId);
 };
 
-async function newCustomer(full_name, phone, email, adress, credit_card_number) {
-    let SQL = `INSERT INTO customers (full_name, phone, email, address, credit_card_number)
+async function newCustomer(full_name, phone, email, password, credit_card_number) {
+    let SQL = `INSERT INTO customers (full_name, phone, email, password, credit_card_number)
     VALUES (?,?,?,?,?);`;
-    const [data] = await pool.query(SQL, [full_name, phone, email, adress, credit_card_number]);
+    const [data] = await pool.query(SQL, [full_name, phone, email, password, credit_card_number]);
     const TheNewCustomer = await getCustomer(data.insertId);
     return TheNewCustomer;
 };
@@ -84,6 +84,13 @@ async function newCustomer(full_name, phone, email, adress, credit_card_number) 
 async function getCustomer(customerId) {
     let SQL = `SELECT * FROM customers WHERE customer_id = ?;`;
     const [customer] = await pool.query(SQL, [customerId]);
+    return customer[0];
+}
+
+//get customer by email
+async function getCustomerByEmail(email) {
+    let SQL = `SELECT * FROM customers WHERE email = ?;`;
+    const [customer] = await pool.query(SQL, [email]);
     return customer[0];
 }
 
@@ -106,5 +113,6 @@ module.exports = {
     getBooking,
     newCustomer,
     deleteBooking,
-    getBookingByCustomer
+    getBookingByCustomer, 
+    getCustomerByEmail
 }

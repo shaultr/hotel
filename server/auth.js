@@ -2,25 +2,31 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: '../.env' });
 const TOKEN_SECRET = process.env.SECRET
 
-const generate = (customer = {}) => {
-    const { customer } = req.body.customer;
+function authenticate(req, res, next) {
+    const authorizationHeader = req.headers.authorization;
 
-    let token = jwt.sign(customer, TOKEN_SECRET, { expiresIn: '7d' })
-    return token
-}
+    if (!authorizationHeader) {
+        console.error('Authorization header missing');
+        return res.status(401).send('Authorization header missing');
+    }
 
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) return res.sendStatus(401);
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, customer) => {
-        if (err) return res.sendStatus(403);
+    const token = authorizationHeader.split('Bearer ')[1];
+
+    if (!token) {
+        console.error('Bearer token missing in Authorization header');
+        return res.status(401).send('Bearer token missing in Authorization header');
+    }
+
+    try {
+        const customer = jwt.verify(token, process.env.TOKEN_SECRET);
         req.customer = customer;
-        next()
-    })
+        next();
+    } catch (error) {
+        console.error('Invalid token:', error);
+        res.status(401).send('Invalid token');
+    }
 }
-
 
 module.exports = {
-    generate,
+    authenticate
 }
