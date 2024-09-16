@@ -49,3 +49,13 @@
     cursor: pointer;
     border-radius: 3px;
   }
+  .picture{
+    display: flex;
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    margin: 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }

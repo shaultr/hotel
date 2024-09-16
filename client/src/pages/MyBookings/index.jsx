@@ -1,6 +1,8 @@
 import styles from './style.module.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Popup from 'reactjs-popup';
+import { calculateDateDifference } from '../../functions/functions';
 
 export default function MyBookings() {
 
@@ -10,8 +12,8 @@ export default function MyBookings() {
     const [customer, setCustomer] = useState(null);
     const [bookings, setBookings] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [del, setDel] = useState(false);
     const [successDel, setSuccessDel] = useState(false);
+    const [IdDel, setIdDel] = useState(0);
 
     const getAllBookings = async () => {
         const id = customer.customer_id;
@@ -26,7 +28,6 @@ export default function MyBookings() {
     };
 
     const deleteBooking = async (bookingId) => {
-        console.log(bookingId);
         try {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -37,13 +38,15 @@ export default function MyBookings() {
                     authorization: `Bearer ${token}`
                 }
             });
+            if (response.status == 200) {
 
-            const newArr = bookings.filter(booking => booking.booking_id !== bookingId);
-            setBookings(newArr);
-            setSuccessDel(true);
-            setTimeout(() => {
-                setSuccessDel(false);
-            }, 3000);
+                const newArr = bookings.filter(booking => booking.booking_id !== bookingId);
+                setBookings(newArr);
+                setSuccessDel(true);
+                setTimeout(() => {
+                    setSuccessDel(false);
+                }, 5000);
+            }
         }
         catch (err) {
         }
@@ -61,9 +64,11 @@ export default function MyBookings() {
                     authorization: `Bearer ${token}`
                 }
             });
-            const cust = res.data;
-            setCustomer(cust)
-            setIsLoggedIn(true);
+            if (res.statusCode === 200) {
+                const cust = res.data;
+                setCustomer(cust)
+                setIsLoggedIn(true);
+            }
         }
         catch (error) {
             console.log('error: ', error);
@@ -80,13 +85,13 @@ export default function MyBookings() {
         }
     }, [isLoggedIn]);
 
-    function calculateDateDifference(sd, ed) {
-        const start = new Date(sd);
-        const end = new Date(ed);
-        const differenceInMillis = end - start;
-        const differenceInDays = differenceInMillis / (1000 * 60 * 60 * 24);
-        return differenceInDays;
-    }
+    // function calculateDateDifference(sd, ed) {
+    //     const start = new Date(sd);
+    //     const end = new Date(ed);
+    //     const differenceInMillis = end - start;
+    //     const differenceInDays = differenceInMillis / (1000 * 60 * 60 * 24);
+    //     return differenceInDays;
+    // }
 
     const login = async () => {
         try {
@@ -134,7 +139,7 @@ export default function MyBookings() {
         <div className={styles.myBookings}>
             {
                 successDel &&
-                 <div className={styles.notification}>ההזמנה בוטלה בהצלחה</div>
+                <div className={styles.notification}>ההזמנה בוטלה בהצלחה</div>
             }
             <div className={styles.logout} onClick={logout}>Logout</div>
 
@@ -146,13 +151,22 @@ export default function MyBookings() {
 
                             isDateInFuture(item.start_date) &&
                             <>
-                                <div className={styles.del} onClick={() => setDel(!del)}>בטל הזמנה</div>
-                                {
-                                    del && <div className={styles.sure}>
-                                        <div className={styles.sureDel} onClick={() => deleteBooking(item.booking_id)}>בטל</div>
-                                        ? האם אתה בטוח שברצונך לבטל את ההזמנה
-                                    </div>
+                                <Popup trigger={
+                                    <div className={styles.del}>בטל הזמנה</div>
                                 }
+                                    onOpen={() => setIdDel(item.booking_id)}
+                                    position="right center">
+
+                                    <div className={styles.sure}>
+                                        ?  רוצה לבטל
+                                        <div className={styles.sureDel}
+                                            onClick={() => deleteBooking(IdDel)}
+                                        >בטל הזמנה
+                                        </div>
+                                    </div>
+
+                                </Popup>
+
                             </>
                         }
                         <table>

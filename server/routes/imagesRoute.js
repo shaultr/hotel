@@ -2,6 +2,11 @@ const express = require('express');
 const images = express.Router();
 const functions = require('../../database/imagesQuery')
 const joi = require('joi');
+const multer = require('multer');
+const { saveImgToCloud } = require('../cloudinary/cloudinary')
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 function validation(req, res, next) {
     const schemaRoomId = joi.number().min(1);
@@ -13,6 +18,32 @@ function validation(req, res, next) {
 
     next();
 }
+//add image
+images.post('/', upload.single('file'), async (req, res) => {
+    console.log(req.body.roomId);
+    
+    try {
+        // if (!req.file) {
+        //     return res.status(400).json({ error: 'No file uploaded' });
+        // }
+
+        // const uploadedImage = await saveImgToCloud(req.file);
+        // if (!uploadedImage) {
+        //     return res.status(500).json({ error: 'Image upload failed' });
+        // }
+
+        // const data = await functions.addImage(uploadedImage.image_url, req.roomId);
+        
+        // if (data) {
+        //     return res.status(200).json(data);
+        // }
+
+        // res.status(404).send();
+    } catch (error) {
+        console.error('Error adding image:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 //get all images
 images.get('/', async (req, res) => {
@@ -48,14 +79,5 @@ images.get('/:roomId', validation, async (req, res) => {
     };
 
 });
-
-
-
-
-
-
-
-
-
 
 module.exports = images;

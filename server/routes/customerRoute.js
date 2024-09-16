@@ -11,8 +11,7 @@ const customerRoute = express.Router();
 customerRoute.get("/",authenticate, async (req, res) => {
     try {
         console.log(req.customer);
-        
-        const result = await functions.getCustomerByEmail('b@b');
+        const result = await functions.getCustomerByEmail(req.customer.email);
         res.send(result)    
     }
     catch (err) {
@@ -40,24 +39,24 @@ customerRoute.get("/login/:email/:password", async (req, res) => {
     }
 });
 
-customerRoute.get("/authenticateToken/:token", async (req, res) => {
-    const tokenParams = req.params.token;
+// customerRoute.get("/authenticateToken/:token", async (req, res) => {
+//     const tokenParams = req.params.token;
 
-    try {
-        const decodedToken = jwt.verify(tokenParams, process.env.TOKEN_SECRET);
-        if (!decodedToken) {
-            return res.status(401).json({ valid: false, msg: 'Token is invalid or expired' });
-        }
+//     try {
+//         const decodedToken = jwt.verify(tokenParams, process.env.TOKEN_SECRET);
+//         if (!decodedToken) {
+//             return res.status(401).json({ valid: false, msg: 'Token is invalid or expired' });
+//         }
 
-        res.json({ valid: true });
-    } catch (error) {
-        console.error('Token verification error:', error);
-        if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
-            return res.status(401).json({ valid: false, msg: 'Invalid or expired token' });
-        }
-        res.status(500).send('Internal Server Error');
-    }
-});
+//         res.json({ valid: true });
+//     } catch (error) {
+//         console.error('Token verification error:', error);
+//         if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
+//             return res.status(401).json({ valid: false, msg: 'Invalid or expired token' });
+//         }
+//         res.status(500).send('Internal Server Error');
+//     }
+// });
 
 
 
@@ -65,9 +64,11 @@ customerRoute.get("/getCustomer/:email", async (req, res) => {
     const email = req.params.email;
     try {
         const customer = await functions.getCustomerByEmail(email);
-        const tokenData = { email };
-        const token = jwt.sign(tokenData, TOKEN_SECRET, { expiresIn: '1h' });
-        res.send({ customer, token });
+        if (customer){
+            const tokenData = { email };
+            const token = jwt.sign(tokenData, TOKEN_SECRET, { expiresIn: '1h' });
+            res.send({ customer, token });
+        }
     } catch (error) {
         console.log(error);
         res.status(500).send();

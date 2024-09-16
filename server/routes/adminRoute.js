@@ -152,7 +152,7 @@ adminRoute.get("/getPendingBookings", async (req, res) => {
 }
 );
 
-adminRoute.delete('/:bookingId', authenticateToken, async (req, res) => {
+adminRoute.delete('/:bookingId', authenticate, async (req, res) => {
     try {
         const data = await functions.deleteBooking(req.params.bookingId);
         if (data) {

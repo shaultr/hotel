@@ -1,23 +1,22 @@
 import styles from './style.module.css';
 import Room from '../../components/Room';
-import DataContext from '../../context/DataContext'
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { format, addDays } from 'date-fns';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
+import { calculateDateDifference } from '../../functions/functions';
 
 
 export default function Rooms() {
   const location = useLocation();
 
-  function calculateDateDifference() {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const differenceInMillis = end - start;
-    const differenceInDays = differenceInMillis / (1000 * 60 * 60 * 24);
-    return differenceInDays;
-  }
+  // function calculateDateDifference() {
+  //   const start = new Date(startDate);
+  //   const end = new Date(endDate);
+  //   const differenceInMillis = end - start;
+  //   const differenceInDays = differenceInMillis / (1000 * 60 * 60 * 24);
+  //   return differenceInDays;
+  // }
   const queryParams = queryString.parse(location.search);
   const startDate = queryParams.startDate;
   const endDate = queryParams.endDate;
@@ -51,7 +50,7 @@ export default function Rooms() {
   };
 
   useEffect(() => {
-    setDifference(calculateDateDifference());
+    setDifference(calculateDateDifference(startDate, endDate));
     !queryParams.startDate ? getAllRooms() : getRoomsByDate();
   }, [startDate, endDate, numBeds]);
 

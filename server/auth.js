@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: '../.env' });
-const TOKEN_SECRET = process.env.SECRET
 
 function authenticate(req, res, next) {
     const authorizationHeader = req.headers.authorization;
@@ -22,10 +21,19 @@ function authenticate(req, res, next) {
         req.customer = customer;
         next();
     } catch (error) {
-        console.error('Invalid token:', error);
-        res.status(401).send('Invalid token');
+        if (error.name === 'TokenExpiredError') {
+            console.error('Token has expired:', error);
+            return res.status(401).send('Token has expired');
+        } else if (error.name === 'JsonWebTokenError') {
+            console.error('Invalid token:', error);
+            return res.status(401).send('Invalid token');
+        } else {
+            console.error('Token verification error:', error);
+            return res.status(401).send('Token verification error');
+        }
     }
 }
+
 
 module.exports = {
     authenticate

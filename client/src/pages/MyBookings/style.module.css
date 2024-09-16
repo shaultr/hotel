@@ -92,25 +92,34 @@
     }
 }
 
-.sure{
-    background-color: #cea000;
+.sure {
+    background-color: #96966cd7;
     width: 30%;
-    height: 44px;
-    position: absolute;
-    margin-left: 100px;
+    height: 40%;
+    font-size: 30px;
     color: white;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     gap: 6px;
     padding: 12px;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); /* צל */
+
+    /* שינויי מיקום למרכז המסך */
+    position: fixed; /* נשאר על המסך גם כשגוללים */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* ממרכז אופקית ואנכית */
+    z-index: 1000; /* כדי להציג מעל אלמנטים אחרים */
 }
+
 
 .sureDel{
     background-color: rgb(165, 73, 73);
     padding: 6px;
     border-radius: 10px;
+    padding: 22px;
 }
 .notification {
     background-color: #d4edda;
@@ -120,13 +129,11 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-weight: bold;
     text-align: center;
-    /* display: none; */
-    position: absolute;
+    position: fixed; /* שיניתי מ-absolute ל-fixed */
     top: 20px;
     right: 20px;
     z-index: 1000;
-    animation: fadeInOut 3s ease-out; /* הפעלת האנימציה */
-
+    animation: fadeInOut 3s ease-out;
 }
 
 @keyframes fadeInOut {

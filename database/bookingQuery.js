@@ -80,7 +80,6 @@ async function newCustomer(full_name, phone, email, password, credit_card_number
     return TheNewCustomer;
 };
 
-// פונקציה לקבלת לקוח לפי מזהה הלקוח
 async function getCustomer(customerId) {
     let SQL = `SELECT * FROM customers WHERE customer_id = ?;`;
     const [customer] = await pool.query(SQL, [customerId]);
