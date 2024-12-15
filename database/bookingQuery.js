@@ -6,6 +6,7 @@ async function isAdmin(name, email) {
     const [data] = await pool.query(SQL,[name, email]);
     return data;
 }
+
 //get all bookings for administration
 async function getAllBookings() {
     const SQL = `SELECT * FROM bookings ORDER BY booking_id DESC`;
@@ -85,6 +86,13 @@ async function getCustomer(customerId) {
     const [customer] = await pool.query(SQL, [customerId]);
     return customer[0];
 }
+async function getAllCustomer() {
+    let SQL = `SELECT * FROM customers`;
+    const [customers] = await pool.query(SQL);
+    
+    const allCustomers = customers.map(({ password, ...rest }) => rest);
+    return allCustomers
+}
 
 //get customer by email
 async function getCustomerByEmail(email) {
@@ -113,5 +121,6 @@ module.exports = {
     newCustomer,
     deleteBooking,
     getBookingByCustomer, 
-    getCustomerByEmail
+    getCustomerByEmail,
+    getAllCustomer
 }

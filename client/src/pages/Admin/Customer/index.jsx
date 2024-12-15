@@ -7,13 +7,14 @@ export default function Customer({ customer_id }) {
 
 
 
-  console.log(customer_id);
   const customerDetails = async () => {
+    console.log('customer:', customer_id);
+    
     if (!customerObj) {
       try {
         const cust = await axios.get(`http://localhost:8000/admin/getCustomer/${customer_id}`);
         setCustomerObj(cust.data);
-        console.log(cust.data);
+        console.log('eee.... ',cust);
       } catch (err) {
         console.error('Error fetching customer details:', err);
       }
@@ -24,7 +25,7 @@ export default function Customer({ customer_id }) {
   };
   return (
     <div>
-      <button onClick={() => customerDetails(customer_id)}>Customer Details</button>
+      <button onClick={() => customerDetails()}>Customer Details</button>
       <div>
         {customerObj && 
         <>

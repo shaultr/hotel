@@ -129,7 +129,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-weight: bold;
     text-align: center;
-    position: fixed; /* שיניתי מ-absolute ל-fixed */
+    position: fixed; 
     top: 20px;
     right: 20px;
     z-index: 1000;

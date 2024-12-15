@@ -1,6 +1,6 @@
 const express = require("express");
 const functions = require("../../database/bookingQuery");
-const {authenticate} = require("../auth");
+const { authenticate } = require("../auth");
 require("dotenv").config({ path: '../.env' });
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
@@ -27,9 +27,22 @@ adminRoute.get('/loginAdmin/:name/:email', async (req, res) => {
 
 
 
+adminRoute.get("/getAllCustomers/", async (req, res) => {
+
+    try {
+        const cust = await functions.getAllCustomer();
+        console.log('kkkkkk', cust);
+        res.json(cust);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send();
+    }
+});
 adminRoute.get("/getCustomer/:customer_id", async (req, res) => {
     try {
-        const cust = await functions.getCustomer(req.params.cust);
+        const cust = await functions.getCustomer(req.params.customer_id);
+        console.log(cust);
+
         res.json(cust);
     } catch (error) {
         console.log(error);
@@ -74,14 +87,14 @@ adminRoute.post("/newCustomer", async (req, res) => {
     }
 });
 
-adminRoute.post("/newBooking",authenticate, async (req, res) => {
+adminRoute.post("/newBooking", authenticate, async (req, res) => {
     try {
         const { customer_id, room_id, payment_amount, startDate, endDate } = req.body;
         const newBooki = await functions.newBooking(customer_id, room_id, startDate, endDate, payment_amount, 1);
         res.json(newBooki);
     } catch (error) {
         console.log("rrr");
-        res.status(500).send(); 
+        res.status(500).send();
     }
 });
 

@@ -4,19 +4,15 @@ import { format } from 'date-fns';
 import Customer from '../Customer';
 import style from './style.module.css';
 import Popup from 'reactjs-popup';
+import { FaTrashAlt } from "react-icons/fa";
 
 
 const Bookings = ({ bookings, deleteBooking }) => {
 
     const [sureDelete, setSureDelete] = useState(false)
 
-
-
-
     return (
         <>
-
-
             <table className={style.bookingTable}>
                 <thead>
                     <tr>
@@ -41,7 +37,7 @@ const Bookings = ({ bookings, deleteBooking }) => {
                             <td><Customer customer_id={booking.customer_id} />
                             </td>
                             <Popup trigger={
-                                <div className={style.delete}> delete booking</div>
+                                <div className={style.delete}> {<FaTrashAlt />}</div>
                              } >
                             <div className={style.sure} onClick={() => deleteBooking(booking.booking_id)}>Are you sure? </div>
                             </Popup>

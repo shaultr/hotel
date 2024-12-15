@@ -1,61 +1,104 @@
-/*  */
-
-.login{
-    display: flex;
-    flex-wrap: wrap;
-    width: 50%;
-    margin: 0 auto;
-    flex-direction: column;
-    justify-content: center;
-    gap: 6px;
-
-}
-.input{
-    width: 50%;
-    margin: 0 auto;
+.login {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+  margin: 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
 }
 
-.go{
-    width: 50%;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    background-color: #cea000;
-    align-items: center;
-    margin: 0 auto;
-    color: white;
+.input {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.go {
+  width: 50%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  background-color: #cea000;
+  align-items: center;
+  margin: 0 auto;
+  color: white;
 }
 
 .select {
-    display: inline-block;
-    align-items: center;
-    margin: 10px;
-    width: 190px;
-    height: 35px;
-    border-radius: 10px;
-    background-color: #cea000;
-    align-items: center;
-    color: white;
-    cursor: pointer;
-    font-size: 19px;
-  }
-  .logout{
-    position: absolute;
-    left: 10px;
-    background-color: #cea000;
-    padding: 15px;
-    
-    color: white;
-    cursor: pointer;
-    border-radius: 3px;
-  }
-  .picture{
-    display: flex;
-    display: flex;
-    flex-wrap: wrap;
-    width: 50%;
-    margin: 0 auto;
-    flex-direction: column;
-    justify-content: center;
-    gap: 6px;
-  }
+  display: inline-block;
+  align-items: center;
+  margin: 10px;
+  width: 190px;
+  height: 35px;
+  border-radius: 10px;
+  background-color: #cea000;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  font-size: 19px;
+}
+
+.logout {
+  position: absolute;
+  left: 10px;
+  background-color: #cea000;
+  padding: 15px;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.picture {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+  margin: 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.notification {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  text-align: center;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  animation: fadeInOut 3s ease-out;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.buttonContainer {
+  margin: 20px 0;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  background-color: lightgray;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #ddd;
+}
+
+button.activeButton {
+  background-color: #cea000;
+  color: white;
+  border: 1px solid blue;
+}

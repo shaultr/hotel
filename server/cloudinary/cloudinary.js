@@ -6,24 +6,27 @@ cloudinary.config({
   api_secret: process.env.CLOUD_SECRET,
 });
 
-const saveImgToCloud = async (img, folder) => {
+const saveImgToCloud = async (imgOrBuffer, folderName = 'images') => {
   try {
-    if (!img) {
+    let buffer;
+    
+    if (!imgOrBuffer) {
       console.error("No image provided");
       return null;
     }
 
-    const fileType = img?.type?.split('/')[0];
-    if (fileType !== 'image') {
-      console.error("File is not an image");
-      return null;
+    if (imgOrBuffer.buffer) {
+      if (!imgOrBuffer.mimetype.includes('image')) {
+        console.error("File is not an image");
+        return null;
+      }
+      buffer = imgOrBuffer.buffer;
+    } else {
+      buffer = imgOrBuffer;
     }
 
-    const arrayBuffer = await img.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
-
     const image = await new Promise((resolve, reject) => {
-      cloudinary.uploader.upload_stream({ folder: folder }, (err, uploadRes) => {
+      cloudinary.uploader.upload_stream({ folder: folderName }, (err, uploadRes) => {
         if (err) {
           return reject(err);
         }
@@ -44,6 +47,7 @@ const saveImgToCloud = async (img, folder) => {
     return null;
   }
 };
+
 
 const deleteImageFromCloud =async (imageId)=>{
  await cloudinary.uploader.destroy(imageId)

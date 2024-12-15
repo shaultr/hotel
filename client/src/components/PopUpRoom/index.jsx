@@ -1,6 +1,6 @@
 import styles from './style.module.css';
 import { useState } from 'react';
-export default function PopUpRoom({images}) {
+export default function PopUpRoom({images, roomType}) {
 
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -14,7 +14,7 @@ export default function PopUpRoom({images}) {
 
   return (
     <div className={styles.popup}>
-      <h1 className={styles.titlePopup}>שם החדר</h1>
+      <h2 className={styles.titlePopup}>{roomType}</h2>
       <div className={styles.popDiv}>
         <img className={styles.popImage} src={images[currentImage]?.image_url} alt={`Image ${currentImage + 1}`} />
           <div className={styles.roomInclude}>

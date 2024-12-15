@@ -20,25 +20,29 @@ function validation(req, res, next) {
 }
 //add image
 images.post('/', upload.single('file'), async (req, res) => {
-    console.log(req.body.roomId);
-    
+    const file = req.file;
+    const roomId = req.body.roomId;
+
+    console.log('File:', file);
+    console.log('Room ID:', roomId);
     try {
-        // if (!req.file) {
-        //     return res.status(400).json({ error: 'No file uploaded' });
-        // }
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
 
-        // const uploadedImage = await saveImgToCloud(req.file);
-        // if (!uploadedImage) {
-        //     return res.status(500).json({ error: 'Image upload failed' });
-        // }
+        const uploadedImage = await saveImgToCloud(req.file);
+        if (!uploadedImage) {
+            return res.status(500).json({ error: 'Image upload failed' });
+        }
+        console.log("success", uploadedImage);
 
-        // const data = await functions.addImage(uploadedImage.image_url, req.roomId);
-        
-        // if (data) {
-        //     return res.status(200).json(data);
-        // }
+        const data = await functions.addImage(uploadedImage.image_url, roomId);
 
-        // res.status(404).send();
+        if (data) {
+            return res.status(200).json(data);
+        }
+
+        res.status(404).send();
     } catch (error) {
         console.error('Error adding image:', error);
         res.status(500).json({ error: 'Internal server error' });

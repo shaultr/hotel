@@ -61,6 +61,7 @@ customerRoute.get("/login/:email/:password", async (req, res) => {
 
 
 customerRoute.get("/getCustomer/:email", async (req, res) => {
+    
     const email = req.params.email;
     try {
         const customer = await functions.getCustomerByEmail(email);
@@ -69,6 +70,11 @@ customerRoute.get("/getCustomer/:email", async (req, res) => {
             const token = jwt.sign(tokenData, TOKEN_SECRET, { expiresIn: '1h' });
             res.send({ customer, token });
         }
+        else{  
+            res.send("not found");
+        }
+        console.log('llc customer route');
+
     } catch (error) {
         console.log(error);
         res.status(500).send();

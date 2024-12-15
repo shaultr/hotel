@@ -3,7 +3,7 @@ const pool = require('./main');
 //add image 
 async function addImage(imageUrl, roomId) {
     try {
-        const SQL_IMAGE = `INSERT INTO images (image_url, public_id) VALUES (?)`;
+        const SQL_IMAGE = `INSERT INTO images (image_url) VALUES (?)`;
         const [data] = await pool.query(SQL_IMAGE, [imageUrl]);
 
         const SQL_ROOM = `INSERT INTO room_images (room_id, image_id) VALUES (?, ?)`;

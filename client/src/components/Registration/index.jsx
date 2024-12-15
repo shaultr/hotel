@@ -35,6 +35,7 @@ export default function Registration() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [form, setForm] = useState('registerForm');
   const [customerId, setCustomerId] = useState(0);
+  const [emailIsSent, setEmailIsSent] = useState(false);
 
   const getCustomerByToken = async () => {
     if (!localStorage.token) {
@@ -73,19 +74,38 @@ export default function Registration() {
   const numBeds = queryParams.numBeds;
   const pension = queryParams.pension;
 
+  const sendEmail = () => {
+    console.log('first')
+    setEmailIsSent(true);
+                setTimeout(() => {
+                  setEmailIsSent(false);
+                }, 5000);
+  }
   const newCustomer = async (data) => {
     const customer_email = data.email;
-    const customer = await axios.get(`http://localhost:8000/customer/getCustomer/${customer_email}`);
+
     try {
-      if (customer.data) {
-        const id = customer.data.customer?.customer_id;
+      console.log('Trying to find existing customer...');
+      const customer = await axios.get(`http://localhost:8000/customer/getCustomer/${customer_email}`);
+
+      if (customer.data && customer.data.customer) {
+        console.log('Customer found:', customer.data.customer);
+        const id = customer.data.customer.customer_id;
         setCustomerId(id);
         const token = customer.data.token;
         localStorage.setItem('token', token);
         setForm('bookingForm');
         return;
+      } else {
+        console.log('Customer not found, creating a new one...');
       }
 
+    } catch (error) {
+      console.log('Customer not found, proceeding to create a new customer...');
+    }
+
+    try {
+      console.log('Creating a new customer...');
       const response = await axios.post(`http://localhost:8000/customer/newCustomer`, {
         fullName: data.fullName,
         phoneNumber: data.phone,
@@ -93,16 +113,18 @@ export default function Registration() {
         password: data.password
       });
 
-      const newCustomerId = JSON.stringify(response.data.newCust.customer_id)
+      console.log('New customer created:', response.data);
+      const newCustomerId = response.data.newCust.customer_id;
       setCustomerId(newCustomerId);
       const token = response.data.token;
       localStorage.setItem('token', token);
       setForm('bookingForm');
 
     } catch (error) {
-      console.error('Error occurred during authentication:', error);
+      console.error('Error occurred during new customer creation:', error);
     }
   };
+
 
   const testAvailability = async () => {
     console.log('ff');
@@ -122,7 +144,6 @@ export default function Registration() {
   };
 
   const newBooking = async () => {
-    console.log('customerrr');
 
     try {
       const token = localStorage.getItem('token');
@@ -141,7 +162,9 @@ export default function Registration() {
           }
         }
       );
+      // sendEmail()
       setForm('success');
+      
 
     } catch (error) {
       console.error('Error occurred during authentication:', error);
@@ -182,36 +205,43 @@ export default function Registration() {
   const handlePrint = () => {
     print(customerName, numBeds, startDate, endDate, payment_amount, numDays, () => navigate('/'));
   };
+  const handleEmail = () => {
+
+  }
 
   return (<div className={style.registration}>
     {form !== 'success' &&
-    <OrderDetails sday={sday}
-    monthNames= {monthNames}
-    smonth={smonth}
-    syear={syear}
-    emonth={emonth}
-    eyear={eyear}
-    eday={eday}
-    numDays={numDays}
-    numBeds={numBeds}
-    pension={pension}
-    payment_amount={payment_amount} />
-    
+      <OrderDetails sday={sday}
+        monthNames={monthNames}
+        smonth={smonth}
+        syear={syear}
+        emonth={emonth}
+        eyear={eyear}
+        eday={eday}
+        numDays={numDays}
+        numBeds={numBeds}
+        pension={pension}
+        payment_amount={payment_amount} />
+
     }
     {form === 'registerForm' &&
-      <RegisterForm
-        handleSubmit={handleSubmit}
-        onSubmitCustomer={onSubmitCustomer}
-        register={register}
-        errors={errors} />
+      <>
+        <div onClick={sentEmail}>fffddddd</div>
+        <div className={style.notification}>נשלח אליך אימייל עם פרטי ההזמנה. להתראות</div>
+        <RegisterForm
+          handleSubmit={handleSubmit}
+          onSubmitCustomer={onSubmitCustomer}
+          register={register}
+          errors={errors} />
+      </>
     }
     {form === 'bookingForm' &&
 
-        <CreditForm onSubmitBooking={onSubmitBooking}
-          availability={availability}
-          register={register}
-          errors={errors} />
-      
+      <CreditForm onSubmitBooking={onSubmitBooking}
+        availability={availability}
+        register={register}
+        errors={errors} />
+
     }
     {form === 'success' && <div className={style.success}>
       <>
@@ -221,6 +251,7 @@ export default function Registration() {
         </h1>
       </>
       <div className={style.print} onClick={() => navigate('/myBookings')}> צפיה בהזמנות שלך </div>
+      <div className={style.print} onClick={handleEmail}>  שלח פרטי הזמנה באימייל</div>
       <div className={style.print} onClick={handlePrint}>הדפס פרטי הזמנה</div>
     </div>}
   </div>

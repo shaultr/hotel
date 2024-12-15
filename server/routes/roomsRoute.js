@@ -18,6 +18,20 @@ rooms.get('/', async (req, res) => {
     };
 
 });
+rooms.get('/roomIds', async (req, res) => {
+    try {
+        const data = await functions.getRoomIds();
+        if (data) {
+            res.json(data);
+            return;
+        }
+        res.status(404).send();
+    }
+    catch (error) {
+        res.status(500).send();
+    };
+
+});
 
 //get all rooms available by date
 rooms.get('/:start_date/:end_date/:num_beds', async (req, res) => {
@@ -52,6 +66,8 @@ rooms.get('/getRoomById/:room_id/:start_date/:end_date', async (req, res) => {
     };
 
 });
+
+
 
 
 module.exports = rooms;

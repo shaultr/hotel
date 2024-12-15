@@ -20,7 +20,6 @@ async function getRoomById(roomId, startDate, endDate) {
     
     return data[0];
 }; 
-getRoomById(1,'2024-03-01', '2024-03-02');
 
 //get all rooms available by date
 async function getRoomsAvailables(startDate, endDate, numBeds) {
@@ -47,9 +46,15 @@ async function getAllRooms() {
     console.log(data);
     return data;
 }
-
+async function getRoomIds() {
+    const SQL = `SELECT room_id FROM rooms`;
+    const [data] = await pool.query(SQL);
+    const roomIds = data.map((row) => row.room_id);
+    return roomIds;
+}
 module.exports = {
   getRoomById,
   getRoomsAvailables,
-  getAllRooms
+  getAllRooms,
+  getRoomIds
 }

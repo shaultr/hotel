@@ -18,16 +18,18 @@ import Weather from './Weather'
 
 
 export default function Home() {
-    const images = ['./images/1a.jpg', './images/home1.jpg', './images/home2.jpg'];
+    const images = ['http://res.cloudinary.com/dx08knp7p/image/upload/v1726777095/images/nbb6dgvvbrzavrctm0cu.jpg',
+        './images/home1.jpg',
+        'http://res.cloudinary.com/dx08knp7p/image/upload/v1726679761/images/tozgu8w2honlfaiqtfc3.jpg'];
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-          setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
         }, 5000);
-    
+
         return () => clearInterval(intervalId);
-      }, [currentImageIndex, images.length]);
+    }, [currentImageIndex, images.length]);
 
     return (
         <div>
@@ -38,13 +40,17 @@ export default function Home() {
 
                 <div className={style.abaut}>
 
-                    Lorem ipsum dolor sit amet  elit.  dolores, quia, pariatur ab minima eaque alias, adipisci ut aliquid repudiandae ipsam animi ullam suscipit veritatis!
+                    ברוכים הבאים למלון שלנו – המקום המושלם לחופשה בלתי נשכחת. אצלנו תיהנו משילוב ייחודי של שירות ברמה גבוהה, נוחות מקסימלית, ונוף עוצר נשימה. המלון מציע חדרים מפוארים, מסעדות גורמה, וספא מפנק, הכל כדי להעניק לכם חוויית אירוח יוצאת דופן. בואו להירגע ולהתפנק באווירה יוקרתית ומרגיעה.
+
+
+
+
                     <br />
                     <br />
                     <img src={images[currentImageIndex]} />
                     <br />
                     <br />
-                 <p className={style.infoRespon}>
+                    <p className={style.infoRespon}>
                     </p>
                 </div>
 

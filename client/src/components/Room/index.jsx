@@ -50,7 +50,7 @@ export default function Room({ room, difference, dates }) {
             <img src={images[0]?.image_url} />
           </div>
         } position="right center">
-          <PopUpRoom images={images} />
+          <PopUpRoom images={images} roomType={room_type}/>
         </Popup>
         <div className={styles.info}>
           <ul>
@@ -93,7 +93,7 @@ export default function Room({ room, difference, dates }) {
 
         </div>
         <div className={styles.total}>
-          {dates.endDate!==undefined && <div className={styles.datails}>
+          {dates.endDate!==undefined && <div className={styles.details}>
             מחיר עבור לילה:{price_per_night}
             <br />
             עבור {difference} ימים :

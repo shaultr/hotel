@@ -157,3 +157,26 @@ input[type="number"]::-webkit-outer-spin-button {
 .success h1{
     color:  #CEA000;
 }
+
+
+.notification {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    text-align: center;
+    position: fixed; 
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    animation: fadeInOut 3s ease-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
