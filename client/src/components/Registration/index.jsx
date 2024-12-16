@@ -35,35 +35,47 @@ export default function Registration() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [form, setForm] = useState('registerForm');
   const [customerId, setCustomerId] = useState(0);
+  const [emailAddress, setEmailAddress] = useState('');
+  const [name, setName] = useState('');
   const [emailIsSent, setEmailIsSent] = useState(false);
-
+  console.log('🎇🎆🎆', emailAddress);
   const getCustomerByToken = async () => {
-    if (!localStorage.token) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('No token found.');
       setIsLoggedIn(false);
-      return
+      return;
     }
+
     try {
-      const token = localStorage.getItem('token');
       const res = await axios.get(`http://localhost:8000/customer/`, {
         headers: {
-          authorization: `Bearer ${token}`
-        }
+          authorization: `Bearer ${token}`,
+        },
       });
+
       if (res.data) {
         const cust = res.data;
-        setCustomer(cust)
+        setCustomer(cust);
         setIsLoggedIn(true);
-        setForm('bookingForm')
+        setForm('bookingForm');
         setCustomerName(cust.full_name);
-        setCustomerId(cust?.customer_id)
+        setCustomerId(cust?.customer_id);
       }
+    } catch (error) {
+      console.log('Token invalid or expired:', error);
+      localStorage.removeItem('token');
+      setIsLoggedIn(false);
     }
-    catch (error) {
-      console.log('error: ', error);
-    }
-  }
+  };
+
+
   useEffect(() => {
     getCustomerByToken();
+    const storedEmail = localStorage.getItem('email');
+    const storedFullName = localStorage.getItem('name');
+    if (storedEmail) setEmailAddress(storedEmail);
+    if (storedFullName) setName(storedFullName);
   }, [])
 
   const queryParams = queryString.parse(location.search);
@@ -74,13 +86,65 @@ export default function Registration() {
   const numBeds = queryParams.numBeds;
   const pension = queryParams.pension;
 
-  const sendEmail = () => {
-    console.log('first')
-    setEmailIsSent(true);
-                setTimeout(() => {
-                  setEmailIsSent(false);
-                }, 5000);
-  }
+  const sendEmail = async () => {
+
+    const emailData = {
+      to: emailAddress,
+      subject: "תודה שהזמנת אצלנו! הנה פרטי ההזמנה שלך",
+      html: `
+      <div style="text-align: right; direction: rtl; font-family: Arial, sans-serif; line-height: 1.5;">
+
+        <p>שלום ${name},</p>
+        <p>תודה שהזמנת חדר במלון.</p>
+        <p>להלן פרטי ההזמנה שלך:</p>
+        <ul>
+          <li>תאריכים: ${startDate} עד ${endDate}</li>
+          <li>מספר מיטות: ${numBeds}</li>
+        </ul>
+
+        <p>נשמח לארח אותך!<br>בברכה,<br>צוות [שם המלון]</p>
+        <a href="http://localhost:3000/myBookings" 
+   style="color: white; 
+          background-color: #007BFF; 
+          padding: 10px 20px; 
+          text-decoration: none; 
+          border-radius: 5px; 
+          display: inline-block; 
+          font-weight: bold; 
+          text-align: center;">
+    לאיזור האישי באתר 
+</a>
+        </div>
+      `,
+    };
+
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/rooms/send-email",
+        emailData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Email sent successfully:", response.data);
+        setEmailIsSent(true);
+        setTimeout(() => {
+          setEmailIsSent(false);
+        }, 5000);
+      } else {
+        console.error("Failed to send email:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+
+
   const newCustomer = async (data) => {
     const customer_email = data.email;
 
@@ -162,9 +226,11 @@ export default function Registration() {
           }
         }
       );
-      // sendEmail()
-      setForm('success');
-      
+      if (response.status === 200) {
+        sendEmail()
+        setForm('success');
+      }
+
 
     } catch (error) {
       console.error('Error occurred during authentication:', error);
@@ -205,9 +271,7 @@ export default function Registration() {
   const handlePrint = () => {
     print(customerName, numBeds, startDate, endDate, payment_amount, numDays, () => navigate('/'));
   };
-  const handleEmail = () => {
 
-  }
 
   return (<div className={style.registration}>
     {form !== 'success' &&
@@ -226,9 +290,12 @@ export default function Registration() {
     }
     {form === 'registerForm' &&
       <>
-        <div onClick={sentEmail}>fffddddd</div>
-        <div className={style.notification}>נשלח אליך אימייל עם פרטי ההזמנה. להתראות</div>
+        <div onClick={sendEmail}>שלח אימייל</div>
         <RegisterForm
+          name={name}
+          setName={setName}
+          emailAddress={emailAddress}
+          setEmailAddress={setEmailAddress}
           handleSubmit={handleSubmit}
           onSubmitCustomer={onSubmitCustomer}
           register={register}
@@ -245,13 +312,16 @@ export default function Registration() {
     }
     {form === 'success' && <div className={style.success}>
       <>
+        {
+          emailIsSent &&
+          <div className={style.notification}>שלחנו אליך אימייל עם פרטי ההזמנה. להתראות</div>
+        }
         <div className={style.circle}>✔️</div>
         <h1>
           הזמנתך התקבלה בהצלחה
         </h1>
       </>
       <div className={style.print} onClick={() => navigate('/myBookings')}> צפיה בהזמנות שלך </div>
-      <div className={style.print} onClick={handleEmail}>  שלח פרטי הזמנה באימייל</div>
       <div className={style.print} onClick={handlePrint}>הדפס פרטי הזמנה</div>
     </div>}
   </div>

@@ -1,7 +1,8 @@
 const express = require('express');
-const joi = require('joi');
 const rooms = express.Router();
+require("dotenv").config({ path: '../.env' });
 const functions = require('../../database/roomsQuery')
+const nodemailer = require("nodemailer");
 
 //get all rooms 
 rooms.get('/', async (req, res) => {
@@ -66,6 +67,35 @@ rooms.get('/getRoomById/:room_id/:start_date/:end_date', async (req, res) => {
     };
 
 });
+
+rooms.post("/send-email", async (req, res) => {
+  const { to, subject, html } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to,
+    subject,
+    html,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).send({ success: true, message: "Email sent successfully!" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).send({ success: false, message: "Failed to send email" });
+  }
+});
+
+  
 
 
 

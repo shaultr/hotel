@@ -70,14 +70,26 @@
   top: 20px;
   right: 20px;
   z-index: 1000;
-  animation: fadeInOut 3s ease-out;
+  opacity: 0;  /* מתחיל בלתי נראה */
+  visibility: hidden;  /* לא ניתן ללחוץ עליו או לראות אותו */
+  animation: fadeInOut 5s forwards;  /* האנימציה תימשך 5 שניות */
 }
 
 @keyframes fadeInOut {
-  0% { opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+    visibility: visible;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 .buttonContainer {

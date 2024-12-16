@@ -129,16 +129,29 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-weight: bold;
     text-align: center;
-    position: fixed; 
+    position: fixed;
     top: 20px;
     right: 20px;
     z-index: 1000;
-    animation: fadeInOut 3s ease-out;
-}
-
-@keyframes fadeInOut {
-    0% { opacity: 0; }
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { opacity: 0; }
-}
+    opacity: 0;  /* מתחיל בלתי נראה */
+    visibility: hidden;  /* לא ניתן ללחוץ עליו או לראות אותו */
+    animation: fadeInOut 5s forwards;  /* האנימציה תימשך 5 שניות */
+  }
+  
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+      visibility: visible;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  
