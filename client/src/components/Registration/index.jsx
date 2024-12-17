@@ -241,6 +241,8 @@ export default function Registration() {
   const onSubmitCustomer = (data) => {
     newCustomer(data);
     setCustomerName(data.fullName);
+    localStorage.setItem("name", data.fullName);
+
   };
 
   const onSubmitBooking = (e) => {
