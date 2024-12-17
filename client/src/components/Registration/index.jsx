@@ -102,7 +102,7 @@ export default function Registration() {
           <li>מספר מיטות: ${numBeds}</li>
         </ul>
 
-        <p>נשמח לארח אותך!<br>בברכה,<br>צוות [שם המלון]</p>
+        <p>נשמח לארח אותך!<br>בברכה,<br>צוות המלון</p>
         <a href="http://localhost:3000/myBookings" 
    style="color: white; 
           background-color: #007BFF; 

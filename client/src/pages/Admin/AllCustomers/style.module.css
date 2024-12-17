@@ -1,0 +1,46 @@
+
+.bookingTable {
+    border-collapse: collapse;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .bookingTable th, .bookingTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .bookingTable th {
+    background-color: #f2f2f2;
+  }
+  .delete{
+    /* background-color: #ddd; */
+    border: 1px solid #cea000;
+    cursor: pointer;
+    width: 80px;
+    height: 50px;
+    margin: 8px;
+    font-size: 20px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 4px  rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .sure{
+    background-color: #cea000;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    width: 120px;
+    height: 70px;
+    padding: 12px;
+    margin: 8px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 4px  rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
