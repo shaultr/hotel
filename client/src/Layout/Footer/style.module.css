@@ -9,3 +9,8 @@
   font-weight: 900;
   border: 2px solid #CEA000;
 }
+
+.popupContent{
+  background-color: white;
+  padding: 10px;
+}
