@@ -71,8 +71,11 @@ export default function CreditForm({ onSubmitBooking, availability, payment }) {
 
       if (response.data.success) {
         setSuccess(true);
-        onSubmitBooking();
-      } else {
+        setTimeout(() => {
+            onSubmitBooking();
+        }, 3000); 
+    }
+      else {
         setCardError('שגיאה בתשלום: ' + response.data.error);
       }
     } catch (err) {
