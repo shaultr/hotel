@@ -31,7 +31,6 @@ adminRoute.get("/getAllCustomers/", async (req, res) => {
 
     try {
         const cust = await functions.getAllCustomer();
-        console.log('kkkkkk', cust);
         res.json(cust);
     } catch (error) {
         console.log(error);
@@ -41,7 +40,6 @@ adminRoute.get("/getAllCustomers/", async (req, res) => {
 adminRoute.get("/getCustomer/:customer_id", async (req, res) => {
     try {
         const cust = await functions.getCustomer(req.params.customer_id);
-        console.log(cust);
 
         res.json(cust);
     } catch (error) {
@@ -93,7 +91,6 @@ adminRoute.post("/newBooking", authenticate, async (req, res) => {
         const newBooki = await functions.newBooking(customer_id, room_id, startDate, endDate, payment_amount, 1);
         res.json(newBooki);
     } catch (error) {
-        console.log("rrr");
         res.status(500).send();
     }
 });

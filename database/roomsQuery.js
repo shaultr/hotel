@@ -16,7 +16,6 @@ async function getRoomById(roomId, startDate, endDate) {
       );
   `;
     const [data] = await pool.query(SQL);
-    console.log(data.length);
     
     return data[0];
 }; 
@@ -43,7 +42,6 @@ async function getRoomsAvailables(startDate, endDate, numBeds) {
 async function getAllRooms() {
     const SQL = `SELECT * FROM rooms`;
     const [data] = await pool.query(SQL);
-    console.log(data);
     return data;
 }
 async function getRoomIds() {

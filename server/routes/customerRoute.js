@@ -10,7 +10,6 @@ const customerRoute = express.Router();
 
 customerRoute.get("/",authenticate, async (req, res) => {
     try {
-        console.log(req.customer);
         const result = await functions.getCustomerByEmail(req.customer.email);
         res.send(result)    
     }

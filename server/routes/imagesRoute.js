@@ -23,8 +23,6 @@ images.post('/', upload.single('file'), async (req, res) => {
     const file = req.file;
     const roomId = req.body.roomId;
 
-    console.log('File:', file);
-    console.log('Room ID:', roomId);
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
@@ -73,7 +71,6 @@ images.get('/:roomId', validation, async (req, res) => {
         const data = await functions.getAllImagesByRoom(req.params.roomId);
         if (data) {
             res.json(data);
-            console.log(data);
             return;
         }
         res.status(404).send();

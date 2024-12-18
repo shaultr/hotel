@@ -17,7 +17,6 @@ export default function MyBookings() {
 
     const getAllBookings = async () => {
         const id = customer.customer_id;
-        console.log(id);
 
         try {
             const { data } = await axios.get(`http://localhost:8000/customer/getBookingsByCustomer/${id}`);

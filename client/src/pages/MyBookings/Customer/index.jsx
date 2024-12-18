@@ -7,13 +7,11 @@ export default function Customer({ customer_id }) {
 
 
 
-  console.log(customer_id);
   const customerDetails = async () => {
     if (!customerObj) {
       try {
         const cust = await axios.get(`http://localhost:8000/admin/getCustomer/${customer_id}`);
         setCustomerObj(cust.data);
-        console.log(cust.data);
       } catch (err) {
         console.error('Error fetching customer details:', err);
       }

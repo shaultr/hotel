@@ -38,7 +38,6 @@ export default function Registration() {
   const [emailAddress, setEmailAddress] = useState('');
   const [name, setName] = useState('');
   const [emailIsSent, setEmailIsSent] = useState(false);
-  console.log('🎇🎆🎆', emailAddress);
   const getCustomerByToken = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -191,7 +190,6 @@ export default function Registration() {
 
 
   const testAvailability = async () => {
-    console.log('ff');
     try {
       const response = await axios.get(
         `http://localhost:8000/rooms/getRoomById/${room_id}/${startDate}/${endDate}}`)
@@ -245,8 +243,7 @@ export default function Registration() {
 
   };
 
-  const onSubmitBooking = (e) => {
-    e.preventDefault()
+  const onSubmitBooking = () => {
     testAvailability()
   }
 
@@ -308,8 +305,8 @@ export default function Registration() {
 
       <CreditForm onSubmitBooking={onSubmitBooking}
         availability={availability}
-        register={register}
-        errors={errors} />
+        payment={payment_amount}
+        />
 
     }
     {form === 'success' && <div className={style.success}>

@@ -8,7 +8,6 @@ export default function Weather() {
     const [info, setInfo] = useState({})
     const [city, setCity] = useState('')
     const [newCity, setNewCity] = useState('jerusalem')
-    console.log(city);
 
     const apiWeather = async () => {
         let url = `https://api.openweathermap.org/data/2.5/
